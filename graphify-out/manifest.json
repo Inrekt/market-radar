@@ -1,0 +1,77 @@
+{
+  "package.json": {
+    "mtime": 1787776919.8747065,
+    "ast_hash": "f0f846c1e715ea67b9d6d15b50931816",
+    "semantic_hash": ""
+  },
+  "scripts/push-state.sh": {
+    "mtime": 1787777105.1094763,
+    "ast_hash": "4068d8c02da7dbfbbc7fc9e7fbfd21c2",
+    "semantic_hash": ""
+  },
+  "scripts/smoke.ts": {
+    "mtime": 1787777105.100429,
+    "ast_hash": "e641129103a7eeccf8c162c70a86c5a9",
+    "semantic_hash": ""
+  },
+  "src/collectors/market.ts": {
+    "mtime": 1787777016.1614883,
+    "ast_hash": "6e08569091814822f2b728fd58ebcdd8",
+    "semantic_hash": ""
+  },
+  "src/collectors/whales.test.ts": {
+    "mtime": 1787777183.8462276,
+    "ast_hash": "92d1ca9efda78bebe85e44a11ac0ae68",
+    "semantic_hash": ""
+  },
+  "src/collectors/whales.ts": {
+    "mtime": 1787777071.18071,
+    "ast_hash": "e2929c3d132e4bc3d419a9605d5edd69",
+    "semantic_hash": ""
+  },
+  "src/flow/ws.test.ts": {
+    "mtime": 1787777410.7421873,
+    "ast_hash": "9cad938d22c26c8204b57d34a881915e",
+    "semantic_hash": ""
+  },
+  "src/flow/ws.ts": {
+    "mtime": 1787777379.3276663,
+    "ast_hash": "5e65bc298e596b5814a992cb7e64c82c",
+    "semantic_hash": ""
+  },
+  "src/hl.ts": {
+    "mtime": 1787776949.8446832,
+    "ast_hash": "ecdc70072eead746e219306d703d391a",
+    "semantic_hash": ""
+  },
+  "src/main.ts": {
+    "mtime": 1787777105.0976267,
+    "ast_hash": "bed4a863b37a32baa13ee1a39dfd7077",
+    "semantic_hash": ""
+  },
+  "src/store/ndjson.ts": {
+    "mtime": 1787776983.05644,
+    "ast_hash": "3ccd375f1e5972ffb7dc56b14b7517bd",
+    "semantic_hash": ""
+  },
+  "src/universe.test.ts": {
+    "mtime": 1787777183.8424487,
+    "ast_hash": "c58945f512433cf01f24061de11779ec",
+    "semantic_hash": ""
+  },
+  "src/universe.ts": {
+    "mtime": 1787776983.0594883,
+    "ast_hash": "cc6ca7d22699536d6438ad0fa9a1ee9b",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1787776919.877793,
+    "ast_hash": "deb324e6d56eeb62f2ad4bba2140d8d5",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1787777441.0443783,
+    "ast_hash": "feae39cef29fe1fc4c40ffae2d42883b",
+    "semantic_hash": ""
+  }
+}
