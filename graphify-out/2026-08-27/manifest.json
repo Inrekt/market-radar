@@ -1,7 +1,7 @@
 {
   "package.json": {
-    "mtime": 1787792193.7674763,
-    "ast_hash": "49180c21262becc66ff443223c32a316",
+    "mtime": 1787790789.2369843,
+    "ast_hash": "f86dffb0bf71ed2febdc610b0ef5f338",
     "semantic_hash": ""
   },
   "scripts/push-state.sh": {
@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "src/bot.ts": {
-    "mtime": 1787792343.121105,
-    "ast_hash": "4dcbbaf4b5b181a74e94dca6d6b907ef",
+    "mtime": 1787791305.8320057,
+    "ast_hash": "13ff6b5e2b6e19a07557b582661791bc",
     "semantic_hash": ""
   },
   "src/botState.ts": {
@@ -135,8 +135,8 @@
     "semantic_hash": ""
   },
   "src/render/chart.ts": {
-    "mtime": 1787792333.207246,
-    "ast_hash": "a13bbc3636bd62270252b9d94b6c65be",
+    "mtime": 1787791274.778957,
+    "ast_hash": "711b2fca2d17e245ede62869b7aba46f",
     "semantic_hash": ""
   },
   "src/render/theme.ts": {
@@ -145,38 +145,8 @@
     "semantic_hash": ""
   },
   "src/text/caption.ts": {
-    "mtime": 1787791552.006342,
-    "ast_hash": "0a520b19fd20d63993a98a3e62e4ec3d",
-    "semantic_hash": ""
-  },
-  "scripts/render-demo.ts": {
-    "mtime": 1787792337.2655215,
-    "ast_hash": "820aceeba8786d1ecea8e7576060359a",
-    "semantic_hash": ""
-  },
-  "src/redact.test.ts": {
-    "mtime": 1787792267.491015,
-    "ast_hash": "2f92908071e63063df9150419c84bc96",
-    "semantic_hash": ""
-  },
-  "src/redact.ts": {
-    "mtime": 1787792293.9784398,
-    "ast_hash": "3bc9645566a746806bef5c3ddeadf1c7",
-    "semantic_hash": ""
-  },
-  "src/render/png.ts": {
-    "mtime": 1787791919.4412925,
-    "ast_hash": "e5352484119e45ba7c4f1f24c190bc4b",
-    "semantic_hash": ""
-  },
-  "src/run-bot.ts": {
-    "mtime": 1787792193.720601,
-    "ast_hash": "562da0f2ee1fd9f291d6a81a4498c380",
-    "semantic_hash": ""
-  },
-  "src/text/caption.test.ts": {
-    "mtime": 1787791671.4253137,
-    "ast_hash": "7d053d399f8f502d3f618798d0046e26",
+    "mtime": 1787791306.024411,
+    "ast_hash": "7b10a241f5c9f2ae334a8d320832b03e",
     "semantic_hash": ""
   }
 }

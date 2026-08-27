@@ -1,0 +1,263 @@
+// Телеграм-бот: карточка разбора монеты по запросу — картинка плюс подпись.
+// Запуском управляет вызывающий код, здесь бот только собирается.
+
+import { Bot, InlineKeyboard, InputFile } from 'grammy'
+import type { CallbackQueryContext, CommandContext, Context, MiddlewareFn } from 'grammy'
+import { mkdtemp } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { fetchAssetCtxs, fetchCandles, type AssetCtx, type Candle } from './hl.js'
+import { markup, type Markup } from './ta/index.js'
+import { renderChart } from './render/png.js'
+import { longCaption, shortCaption, type WhaleSummary } from './text/caption.js'
+import { loadBotState, saveBotState, type BotState } from './botState.js'
+import { safeError } from './redact.js'
+
+const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
+type Timeframe = (typeof TIMEFRAMES)[number]
+type Mode = 'short' | 'long'
+
+const DEFAULT_TF: Timeframe = '15m'
+
+/** В клавиатуре три из пяти: на 5m шум, а 1d за сеанс всё равно не поменяется. */
+const QUICK_TFS: readonly Timeframe[] = ['15m', '1h', '4h']
+
+/** 200 баров — предел, на котором свеча ещё различима в ширину картинки. */
+const BARS = 200
+
+/** Запас: биржа не рисует бары без сделок, а незакрытую fetchCandles выбрасывает. */
+const BARS_MARGIN = 40
+
+/**
+ * Вертикальный кадр 4:5 — максимум высоты, который Телеграм показывает в ленте
+ * без обрезки. Горизонтальный 16:9 на телефоне занимает полоску в треть экрана,
+ * и свечи в ней уже не разглядеть. 1080 по ширине — предел, выше которого
+ * Телеграм ужмёт фото сам и размажет линии в 1px.
+ */
+const CHART_WIDTH = 1080
+const CHART_HEIGHT = 1350
+
+const TF_SECONDS: Record<Timeframe, number> = {
+  '5m': 300, '15m': 900, '1h': 3_600, '4h': 14_400, '1d': 86_400,
+}
+
+/** Трое суток: нужен один закрытый дневной бар для PDH/PDL, с запасом на дыры. */
+const DAILY_LOOKBACK_SEC = 3 * 86_400
+
+/**
+ * Разборы уже отправленных карточек. Подпись обязана описывать ту картинку,
+ * что висит в чате, поэтому при смене режима данные берём отсюда, а не свежие.
+ */
+const CARD_LIMIT = 40
+const cards = new Map<string, Analysis>()
+
+/** Один пакет на обе стороны карточки: и в ChartInput, и в CaptionInput. */
+interface Analysis {
+  readonly coin: string
+  readonly interval: Timeframe
+  readonly bars: Candle[]
+  readonly markup: Markup
+  readonly ctx: AssetCtx
+  /** Кита в подпись пока никто не собирает — поле ждёт своего поставщика. */
+  readonly whales: WhaleSummary | null
+  readonly width: number
+  readonly height: number
+}
+
+const HELLO = [
+  'Радар рынка на связи.',
+  'Присылаю карточку разбора: свечи с зонами и уровнями ликвидности картинкой, вывод — текстом.',
+  `Пример: /ta SOL 1h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`,
+].join('\n')
+
+const TA_USAGE = `Нужен тикер: /ta SOL или /ta BTC 4h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`
+
+const STRANGER = 'Это личный инструмент, он отвечает только владельцу.'
+
+export function createBot(token: string): Bot {
+  const bot = new Bot(token)
+  bot.use(ownerGuard())
+  bot.command('start', async (ctx) => { await ctx.reply(HELLO) })
+  bot.command('ta', onTa)
+  bot.callbackQuery(/^ta:/, onCallback)
+  // Последняя сеть: апдейт теряется, процесс живёт.
+  //
+  // Ошибка печатается ТОЛЬКО через safeError. Проверено 27.08.2026: при сетевом
+  // сбое (не отказе API) grammy кладёт во вложенную ошибку полный URL запроса
+  // вместе с токеном — «request to https://api.telegram.org/bot<ТОКЕН>/getMe
+  // failed». Логи Actions в публичном репозитории читает кто угодно, и стереть
+  // напечатанное оттуда нельзя — только перевыпускать токен.
+  bot.catch((error) => { console.error('сбой обработчика:', safeError(error)) })
+  return bot
+}
+
+/**
+ * Пропускает только владельца, им становится первый написавший. Состояние
+ * держим в памяти: диск читается раз за процесс, а не на каждый апдейт.
+ */
+function ownerGuard(): MiddlewareFn<Context> {
+  let state: BotState | null = null
+  return async (ctx, next) => {
+    const userId = ctx.from?.id
+    if (userId === undefined) return
+    const known: BotState = state ?? (state = await loadBotState())
+    if (known.ownerId !== null && known.ownerId !== userId) {
+      await refuse(ctx)
+      return
+    }
+    const chatId = ctx.chat?.id ?? known.lastChatId
+    if (known.ownerId === null || known.lastChatId !== chatId) {
+      state = { ownerId: userId, lastChatId: chatId }
+      await saveBotState(state)
+    }
+    await next()
+  }
+}
+
+/** Отказ посторонним: одна строка, без подсказок, что бот вообще умеет. */
+async function refuse(ctx: Context): Promise<void> {
+  if (ctx.callbackQuery !== undefined) await ctx.answerCallbackQuery(STRANGER)
+  else await ctx.reply(STRANGER).catch(() => undefined)
+}
+
+async function onTa(ctx: CommandContext<Context>): Promise<void> {
+  const [rawCoin, rawTf] = ctx.match.trim().split(/\s+/)
+  if (rawCoin === undefined || rawCoin === '') {
+    await ctx.reply(TA_USAGE)
+    return
+  }
+  const tf = parseTimeframe(rawTf)
+  if (tf === null) {
+    await ctx.reply(`Не знаю таймфрейм «${rawTf ?? ''}». Есть: ${TIMEFRAMES.join(', ')}.`)
+    return
+  }
+  await sendCard(ctx, rawCoin.toUpperCase(), tf, 'short')
+}
+
+/** Пропущенный аргумент — не ошибка, а «как обычно»; чужой — ошибка. */
+function parseTimeframe(value: string | undefined): Timeframe | null {
+  if (value === undefined || value === '') return DEFAULT_TF
+  const lower = value.toLowerCase()
+  return TIMEFRAMES.find((item) => item === lower) ?? null
+}
+
+async function onCallback(ctx: CallbackQueryContext<Context>): Promise<void> {
+  // Отвечаем сразу: Телеграм крутит часы на кнопке и ждёт заметно меньше, чем идёт сборка.
+  await ctx.answerCallbackQuery().catch(() => undefined)
+  const parsed = parseCallbackData(ctx.callbackQuery.data)
+  if (parsed === null) return
+  const message = ctx.callbackQuery.message
+  const key = message === undefined ? null : cardKey(message.chat.id, message.message_id)
+  const cached = key === null ? undefined : cards.get(key)
+  if (cached !== undefined && cached.interval === parsed.tf) {
+    await switchMode(ctx, cached, parsed.mode)
+    return
+  }
+  // Другой таймфрейм или разбор, потерянный перезапуском: подписать старую картинку нечем.
+  await sendCard(ctx, parsed.coin, parsed.tf, parsed.mode)
+}
+
+/**
+ * 'ta:SOL:1h:long'. Бюджет callback_data — 64 байта: 'ta:' плюс тикер (у
+ * Hyperliquid это короткая латиница) плюс ':4h:long' — вдвое короче предела.
+ */
+function parseCallbackData(data: string): { coin: string, tf: Timeframe, mode: Mode } | null {
+  const [prefix, coin, rawTf, rawMode] = data.split(':')
+  if (prefix !== 'ta' || coin === undefined || coin === '' || rawTf === undefined) return null
+  if (rawMode !== 'short' && rawMode !== 'long') return null
+  const tf = parseTimeframe(rawTf)
+  return tf === null ? null : { coin: coin.toUpperCase(), tf, mode: rawMode }
+}
+
+async function sendCard(ctx: Context, coin: string, tf: Timeframe, mode: Mode): Promise<void> {
+  try {
+    const input = await analyze(coin, tf)
+    const photo = await renderChart(input, await chartPath())
+    const sent = await ctx.replyWithPhoto(new InputFile(photo), {
+      caption: caption(input, mode),
+      reply_markup: keyboard(input.coin, tf, mode),
+    })
+    remember(cardKey(sent.chat.id, sent.message_id), input)
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error)
+    console.error(`карточка ${coin} ${tf}: ${safeError(error)}`)
+    // Отказ тоже может не уйти (чат удалён) — тогда молча, иначе упадёт сам обработчик.
+    await ctx.reply(`Не смог собрать карточку по ${coin}: ${reason}`).catch(() => undefined)
+  }
+}
+
+/** Только подпись: перерисовка ради текста — лишние три секунды и лишний файл. */
+async function switchMode(ctx: CallbackQueryContext<Context>, input: Analysis, mode: Mode): Promise<void> {
+  try {
+    await ctx.editMessageCaption({
+      caption: caption(input, mode),
+      reply_markup: keyboard(input.coin, input.interval, mode),
+    })
+  } catch (error) {
+    // Повторное нажатие того же режима — Телеграм отвечает «message is not modified».
+    console.error(`смена режима ${input.coin}: ${safeError(error)}`)
+  }
+}
+
+function caption(input: Analysis, mode: Mode): string {
+  return mode === 'long' ? longCaption(input) : shortCaption(input)
+}
+
+/** Ряд таймфреймов и ряд режимов; точка помечает то, что показано сейчас. */
+function keyboard(coin: string, tf: Timeframe, mode: Mode): InlineKeyboard {
+  const kb = new InlineKeyboard()
+  for (const item of QUICK_TFS) kb.text(mark(item, item === tf), `ta:${coin}:${item}:${mode}`)
+  kb.row()
+  kb.text(mark('Кратко', mode === 'short'), `ta:${coin}:${tf}:short`)
+  kb.text(mark('Подробно', mode === 'long'), `ta:${coin}:${tf}:long`)
+  return kb
+}
+
+function mark(label: string, active: boolean): string {
+  return active ? `• ${label}` : label
+}
+
+function cardKey(chatId: number, messageId: number): string {
+  return `${chatId}:${messageId}`
+}
+
+/** Map хранит порядок вставки, поэтому первый ключ — самая старая карточка. */
+function remember(key: string, input: Analysis): void {
+  cards.set(key, input)
+  if (cards.size <= CARD_LIMIT) return
+  const oldest = cards.keys().next()
+  if (oldest.done !== true) cards.delete(oldest.value)
+}
+
+async function analyze(coin: string, tf: Timeframe): Promise<Analysis> {
+  // Тикер сверяем со списком биржи, а не с регистром ввода: у Hyperliquid есть
+  // символы вида kPEPE, и «KPEPE» она не знает.
+  const ctx = (await fetchAssetCtxs()).find((item) => item.coin.toUpperCase() === coin)
+  if (ctx === undefined) throw new Error('такой монеты на Hyperliquid нет')
+  const nowMs = Date.now()
+  const nowSec = Math.floor(nowMs / 1000)
+  const [recent, daily] = await Promise.all([
+    fetchCandles(ctx.coin, tf, nowSec - TF_SECONDS[tf] * (BARS + BARS_MARGIN), nowMs),
+    fetchCandles(ctx.coin, '1d', nowSec - DAILY_LOOKBACK_SEC, nowMs),
+  ])
+  const bars = recent.slice(-BARS)
+  if (bars.length === 0) throw new Error('биржа не отдала ни одного закрытого бара')
+  return {
+    coin: ctx.coin, interval: tf, bars, markup: markup(bars, daily.at(-1)),
+    ctx, whales: null, width: CHART_WIDTH, height: CHART_HEIGHT,
+  }
+}
+
+/**
+ * Кольцо имён во временном каталоге: пока Телеграм дочитывает картинку, её имя
+ * не переиспользуется, и на диске никогда не больше CHART_SLOTS файлов.
+ */
+const CHART_SLOTS = 8
+let chartDir: string | null = null
+let chartSlot = 0
+
+async function chartPath(): Promise<string> {
+  const dir = chartDir ?? (chartDir = await mkdtemp(join(tmpdir(), 'market-radar-')))
+  chartSlot = (chartSlot + 1) % CHART_SLOTS
+  return join(dir, `card-${chartSlot}.png`)
+}

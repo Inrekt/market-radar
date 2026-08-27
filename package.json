@@ -3,17 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "record": "tsx src/main.ts",
     "smoke": "tsx scripts/smoke.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "bot": "tsx src/run-bot.ts",
+    "render": "tsx scripts/render-demo.ts"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
     "tsx": "^4.23.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "grammy": "^1.46.0",
+    "lightweight-charts": "^5.2.1",
+    "puppeteer": "^25.9.0"
   }
 }
