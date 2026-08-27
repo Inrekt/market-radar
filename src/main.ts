@@ -12,10 +12,14 @@ import {
 import { FlowRecorder } from './flow/ws.js'
 import { refreshWatchlist, type WatchEntry } from './universe.js'
 import { readJson, writeJson, STATE_DIR } from './store/ndjson.js'
+import { scanOnce } from './scan/run.js'
+import { telegramNotifier } from './scan/notify.js'
 import { join } from 'node:path'
 
 const WATCHLIST_PATH = join(STATE_DIR, 'watchlist.json')
 const WATCHLIST_TICK_MS = 24 * 3_600_000
+/** Сканер идёт следом за снимком рынка: свежее данных всё равно не будет. */
+const SCAN_TICK_MS = 5 * 60_000
 
 function argNumber(name: string): number | null {
   const index = process.argv.indexOf(name)
@@ -49,6 +53,16 @@ async function main(): Promise<void> {
   flow.start()
   log('поток пишется')
 
+  try {
+    process.loadEnvFile('.env')
+  } catch {
+    // токен может прийти из окружения — это нормально
+  }
+  const token = process.env.BOT_TOKEN
+  const notifier = token === undefined ? null : await telegramNotifier(token)
+  if (notifier === null) log('сканер: пинги выключены (нет токена или владельца) — считаю и пишу в журнал')
+
+  let nextScan = Date.now() + SCAN_TICK_MS
   let nextMarket = 0
   let nextWhales = 0
   let nextWatchlist = Date.now() + WATCHLIST_TICK_MS
@@ -79,6 +93,11 @@ async function main(): Promise<void> {
         universe = await refreshUniverse(now)
         nextUniverse = now + UNIVERSE_TICK_MS
         log(`список китов обновлён: ${universe.addresses.length}`)
+      }
+      if (now >= nextScan) {
+        const outcome = await scanOnce(notifier, now)
+        nextScan = now + SCAN_TICK_MS
+        log(`сканер: ${outcome.shortlisted} кандидатов, прошли порог ${outcome.passed}, отправлено ${outcome.sent}`)
       }
       if (now >= nextWatchlist) {
         watch = refreshWatchlist(watch.entries, await fetchAssetCtxs(), now)

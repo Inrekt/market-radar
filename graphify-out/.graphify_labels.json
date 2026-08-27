@@ -3,12 +3,13 @@
   "1": "flowCaption.ts",
   "2": "package.json",
   "3": "compilerOptions",
-  "4": "whales.ts",
+  "4": "hl.ts",
   "5": "index.ts",
   "6": "caption.ts",
   "7": "Market Radar",
   "8": "push-state.sh",
   "9": "bot.ts",
   "10": "chart.ts",
-  "11": "hl.ts"
+  "11": "ws.ts",
+  "12": "botFlow.ts"
 }
