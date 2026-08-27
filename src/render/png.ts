@@ -3,7 +3,7 @@
 
 import { mkdir } from 'node:fs/promises'
 import { dirname } from 'node:path'
-import puppeteer, { TimeoutError, type Browser, type Page } from 'puppeteer'
+import puppeteer, { TimeoutError, type Browser, type ElementHandle, type Page } from 'puppeteer'
 import { chartHtml, type ChartInput } from './chart.js'
 
 /**
@@ -22,6 +22,17 @@ const READY_TIMEOUT_MS = 15_000
 
 /** Контейнер из chart.ts: в нём и холст библиотеки, и слой разметки поверх него. */
 const CHART_SELECTOR = '#wrap'
+
+/**
+ * Окно, в котором страница открывается до первого замера. Свой размер знает
+ * только сама страница — она задаёт кадр в пикселях, — а спросить её об этом
+ * можно лишь после загрузки, когда скрипт уже отработал. Рисовать в окне меньше
+ * кадра нельзя: часть страницы оказывается за границей окна, и библиотека
+ * графиков не считает эти цены видимыми. Поэтому стартовое окно заведомо больше
+ * любой карточки; лишнее в снимок не попадёт — он делается по элементу.
+ */
+const START_VIEWPORT_W = 1600
+const START_VIEWPORT_H = 1200
 
 /**
  * Больше двух попыток поднять браузер смысла не имеет: одна лечит гонку с уже
@@ -66,45 +77,82 @@ async function browser(): Promise<Browser> {
  * Пустая картинка хуже ошибки: ошибку видно сразу, а пустой кадр принимают за
  * правду и потом ищут причину в рынке, а не в рендере.
  */
-async function waitReady(page: Page, input: ChartInput): Promise<void> {
+async function waitReady(page: Page, label: string): Promise<void> {
   try {
     await page.waitForFunction('window.__chartReady === true', { timeout: READY_TIMEOUT_MS })
   } catch (error) {
     if (!(error instanceof TimeoutError)) throw error
     throw new Error(
-      `график ${input.coin} ${input.interval} не отрисовался за ${READY_TIMEOUT_MS / 1000} с`,
+      `карточка «${label}» не отрисовалась за ${READY_TIMEOUT_MS / 1000} с`,
       { cause: error },
     )
   }
 }
 
 /**
- * Рисует график и возвращает путь к записанному PNG.
+ * Подгоняет окно под кадр. Замер идёт сразу после загрузки, когда размеры уже
+ * известны, но отрисовка ещё впереди (страница выставляет флаг готовности из
+ * requestAnimationFrame), — так кадр гарантированно целиком внутри окна к моменту
+ * снимка. Масштаб (deviceScaleFactor) здесь не трогаем: холсты уже созданы под
+ * него, и смена на ходу дала бы мыло вместо чёткой картинки.
+ */
+async function fitViewport(page: Page, frame: ElementHandle<Element>): Promise<void> {
+  const box = await frame.boundingBox()
+  // null означает, что элемент не отрисован (display:none или нулевой размер) —
+  // менять окно не по чему, а ошибку тут поднимать рано: снимок скажет яснее.
+  if (box === null) return
+  await page.setViewport({
+    width: Math.max(1, Math.ceil(box.width)),
+    height: Math.max(1, Math.ceil(box.height)),
+    deviceScaleFactor: DEVICE_SCALE,
+  })
+}
+
+/**
+ * Снимает готовую страницу в PNG и возвращает путь к нему. Страница обязана быть
+ * самодостаточной (без выхода в сеть), задавать размер кадра в пикселях сама и
+ * выставлять window.__chartReady, когда рисовать больше нечего.
+ *
+ * label — человекочитаемое имя карточки: оно попадёт в текст ошибки, если кадр
+ * не успел отрисоваться. «SOL 15m» в ошибке говорит больше, чем селектор.
  *
  * Браузер переживает вызов намеренно (см. browser()), поэтому в finally
  * закрывается вкладка, а не он: незакрытые вкладки копят память ровно так же,
  * как копили бы процессы Chrome. Сам браузер закрывает closeBrowser().
  */
-export async function renderChart(input: ChartInput, outPath: string): Promise<string> {
+export async function renderHtml(
+  html: string,
+  outPath: string,
+  selector: string,
+  label: string,
+): Promise<string> {
   await mkdir(dirname(outPath), { recursive: true })
   const page = await (await browser()).newPage()
   try {
-    // Окно ровно под кадр: снимок делается по элементу, но за пределами окна
-    // библиотека не считает видимой ни одну цену и разметка не ляжет.
-    await page.setViewport({ width: input.width, height: input.height, deviceScaleFactor: DEVICE_SCALE })
-    await page.setContent(chartHtml(input), { waitUntil: 'load' })
-    await waitReady(page, input)
-    const chart = await page.$(CHART_SELECTOR)
-    if (chart === null) throw new Error(`на странице графика нет элемента ${CHART_SELECTOR}`)
+    await page.setViewport({
+      width: START_VIEWPORT_W,
+      height: START_VIEWPORT_H,
+      deviceScaleFactor: DEVICE_SCALE,
+    })
+    await page.setContent(html, { waitUntil: 'load' })
+    const frame = await page.$(selector)
+    if (frame === null) throw new Error(`на странице «${label}» нет элемента ${selector}`)
+    await fitViewport(page, frame)
+    await waitReady(page, label)
     // Снимок по элементу, а не по окну: иначе в кадр попадают поля страницы и
-    // ширина картинки перестаёт совпадать с шириной графика.
-    await chart.screenshot({ path: outPath })
+    // ширина картинки перестаёт совпадать с шириной карточки.
+    await frame.screenshot({ path: outPath })
     return outPath
   } finally {
     // Закрытие вкладки не должно перебивать настоящую ошибку рендера: если
     // браузер уже умер, page.close() бросит поверх неё свою, менее полезную.
     await page.close().catch(() => undefined)
   }
+}
+
+/** Карточка структуры: свечи, зоны, линии. */
+export async function renderChart(input: ChartInput, outPath: string): Promise<string> {
+  return renderHtml(chartHtml(input), outPath, CHART_SELECTOR, `${input.coin} ${input.interval}`)
 }
 
 /**

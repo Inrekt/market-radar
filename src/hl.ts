@@ -122,6 +122,41 @@ export async function fetchCandles(
     }))
 }
 
+export interface BookLevel {
+  readonly px: number
+  /** объём уровня в долларах */
+  readonly usd: number
+  /** число заявок на уровне — по нему видно, одна это плита или толпа мелких */
+  readonly orders: number
+}
+
+export interface Book {
+  readonly t: number
+  readonly bids: BookLevel[]
+  readonly asks: BookLevel[]
+}
+
+/**
+ * Ближний стакан. Публично отдаётся ТОЛЬКО 20 уровней на сторону — по SOL это
+ * примерно ±4 цента от цены. Карту глубины из этого собрать нельзя ни нам, ни
+ * платному сервису на том же источнике; годится перекос у самой цены и плиты
+ * в этом узком окне. Замерено 27.08.2026.
+ */
+export async function fetchBook(coin: string): Promise<Book> {
+  const raw = await postInfo<{
+    time: number
+    levels: [readonly { px: string; sz: string; n: number }[], readonly { px: string; sz: string; n: number }[]]
+  }>({ type: 'l2Book', coin })
+  const side = (levels: readonly { px: string; sz: string; n: number }[]): BookLevel[] =>
+    levels.map((level) => ({
+      px: Number(level.px),
+      usd: Number(level.px) * Number(level.sz),
+      orders: level.n,
+    }))
+  const [bids = [], asks = []] = raw.levels
+  return { t: raw.time, bids: side(bids), asks: side(asks) }
+}
+
 interface RawLeaderboardRow {
   readonly ethAddress: string
   readonly accountValue: string

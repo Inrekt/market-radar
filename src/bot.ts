@@ -12,6 +12,7 @@ import { renderChart } from './render/png.js'
 import { longCaption, shortCaption, type WhaleSummary } from './text/caption.js'
 import { loadBotState, saveBotState, type BotState } from './botState.js'
 import { safeError } from './redact.js'
+import { registerFlow } from './botFlow.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
 type Timeframe = (typeof TIMEFRAMES)[number]
@@ -31,11 +32,14 @@ const BARS_MARGIN = 40
 /**
  * Вертикальный кадр 4:5 — максимум высоты, который Телеграм показывает в ленте
  * без обрезки. Горизонтальный 16:9 на телефоне занимает полоску в треть экрана,
- * и свечи в ней уже не разглядеть. 1080 по ширине — предел, выше которого
- * Телеграм ужмёт фото сам и размажет линии в 1px.
+ * и свечи в ней уже не разглядеть.
+ *
+ * 1440 по ширине, а не 1080: телеграм всё равно пережимает фото, и запас
+ * исходного разрешения — единственное, что остаётся после его сжатия. Предел
+ * сервиса — сумма сторон до 10000, здесь с удвоением плотности выходит 6480.
  */
-const CHART_WIDTH = 1080
-const CHART_HEIGHT = 1350
+const CHART_WIDTH = 1440
+const CHART_HEIGHT = 1800
 
 const TF_SECONDS: Record<Timeframe, number> = {
   '5m': 300, '15m': 900, '1h': 3_600, '4h': 14_400, '1d': 86_400,
@@ -68,6 +72,7 @@ const HELLO = [
   'Радар рынка на связи.',
   'Присылаю карточку разбора: свечи с зонами и уровнями ликвидности картинкой, вывод — текстом.',
   `Пример: /ta SOL 1h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`,
+  'Что происходит с потоком прямо сейчас — /flow SOL: лента, дельта, ближний стакан.',
 ].join('\n')
 
 const TA_USAGE = `Нужен тикер: /ta SOL или /ta BTC 4h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`
@@ -80,6 +85,7 @@ export function createBot(token: string): Bot {
   bot.command('start', async (ctx) => { await ctx.reply(HELLO) })
   bot.command('ta', onTa)
   bot.callbackQuery(/^ta:/, onCallback)
+  registerFlow(bot)
   // Последняя сеть: апдейт теряется, процесс живёт.
   //
   // Ошибка печатается ТОЛЬКО через safeError. Проверено 27.08.2026: при сетевом

@@ -1,6 +1,6 @@
 {
-  "0": "hl.ts",
-  "1": "ws.ts",
+  "0": "flowChart.ts",
+  "1": "flowCaption.ts",
   "2": "package.json",
   "3": "compilerOptions",
   "4": "whales.ts",
@@ -10,6 +10,5 @@
   "8": "push-state.sh",
   "9": "bot.ts",
   "10": "chart.ts",
-  "11": "caption.test.ts",
-  "12": "redact.ts"
+  "11": "hl.ts"
 }

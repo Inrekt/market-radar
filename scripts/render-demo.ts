@@ -12,8 +12,8 @@ const FIXTURE = 'src/ta/fixtures/sol-15m.json'
 const OUT = 'out/ta-sol-15m.png'
 
 /** Тот же кадр, что уходит в карточку бота: проверять надо ровно то, что увидят. */
-const WIDTH = 1080
-const HEIGHT = 1350
+const WIDTH = 1440
+const HEIGHT = 1800
 
 async function main(): Promise<void> {
   const bars = JSON.parse(await readFile(FIXTURE, 'utf8')) as Candle[]
