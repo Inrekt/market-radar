@@ -23,19 +23,26 @@ run_forever() {
   done
 }
 
-# Один опрос обновлений на весь мир: два бота молча поделили бы сообщения
-# между собой, и половина команд пропала бы без всякой ошибки.
-if pgrep -f "tsx src/run-bot.ts" > /dev/null; then
-  echo "бот уже запущен — второй экземпляр не поднимаю"
-else
-  run_forever bot "npx tsx src/run-bot.ts" &
-fi
+# Надзиратель забирает оба процесса себе, а не уступает уже запущенным.
+#
+# Первая версия отказывалась поднимать то, что уже работает, — и тем самым не
+# брала его под опеку: когда такой процесс потом падал, возвращать его было
+# некому. Поймано сразу на живом запуске. Поэтому чужие экземпляры сначала
+# останавливаются, и дальше владелец ровно один.
+#
+# Заодно это защищает от двух ботов: опрос обновлений у Telegram
+# однопотребительский, две копии молча поделили бы сообщения между собой и
+# половина команд пропала бы без всякой ошибки.
+for pattern in "tsx src/run-bot.ts" "tsx src/main.ts"; do
+  for pid in $(pgrep -f "$pattern"); do
+    echo "останавливаю чужой экземпляр: $pattern (pid $pid)"
+    kill "$pid" 2>/dev/null
+  done
+done
+sleep 3
 
-if pgrep -f "tsx src/main.ts" > /dev/null; then
-  echo "регистратор уже запущен — второй экземпляр не поднимаю"
-else
-  run_forever record "npx tsx src/main.ts" &
-fi
+run_forever bot "npx tsx src/run-bot.ts" &
+run_forever record "npx tsx src/main.ts" &
 
 echo "надзиратель поднят. Логи: logs/bot.log и logs/record.log"
 echo "остановить всё: pkill -f 'tsx src/run-bot.ts'; pkill -f 'tsx src/main.ts'; pkill -f serve.sh"
