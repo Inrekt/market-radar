@@ -3,7 +3,7 @@
   "1": "flowCaption.ts",
   "2": "package.json",
   "3": "compilerOptions",
-  "4": "run.ts",
+  "4": "hl.ts",
   "5": "index.ts",
   "6": "caption.ts",
   "7": "Market Radar",
@@ -12,5 +12,9 @@
   "10": "chart.ts",
   "11": "ws.ts",
   "12": "metrics.ts",
-  "13": "budget.test.ts"
+  "13": "budget.test.ts",
+  "14": "digest.ts",
+  "15": "scorecard.ts",
+  "16": "digest.test.ts",
+  "17": "events.ts"
 }

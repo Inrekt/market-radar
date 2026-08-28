@@ -1,12 +1,12 @@
 # Graph Report - market-radar  (2026-08-28)
 
 ## Corpus Check
-- 53 files · ~37,162 words
+- 59 files · ~46,550 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 489 nodes · 1240 edges · 14 communities (13 shown, 1 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 22 edges (avg confidence: 0.72)
+- 575 nodes · 1430 edges · 18 communities (17 shown, 1 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.68)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -19,7 +19,7 @@
 - flowCaption.ts
 - package.json
 - compilerOptions
-- run.ts
+- hl.ts
 - index.ts
 - caption.ts
 - Market Radar
@@ -29,18 +29,22 @@
 - ws.ts
 - metrics.ts
 - budget.test.ts
+- digest.ts
+- scorecard.ts
+- digest.test.ts
+- events.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `markup` - 25 edges
-2. `scanOnce()` - 24 edges
+2. `scanOnce()` - 23 edges
 3. `safe()` - 23 edges
-4. `longFlowCaption()` - 22 edges
-5. `Candle` - 18 edges
-6. `shortCaption()` - 18 edges
-7. `fmtMoney()` - 17 edges
-8. `shortFlowCaption()` - 17 edges
-9. `main()` - 15 edges
-10. `longCaption()` - 15 edges
+4. `fmtMoney()` - 22 edges
+5. `longFlowCaption()` - 22 edges
+6. `Candle` - 20 edges
+7. `shortCaption()` - 18 edges
+8. `dayFile()` - 17 edges
+9. `fmtPct()` - 17 edges
+10. `shortFlowCaption()` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `main()` --calls--> `fetchCandles()`  [EXTRACTED]
@@ -57,7 +61,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (14 total, 1 thin omitted)
+## Communities (18 total, 1 thin omitted)
 
 ### Community 0 - "flowChart.ts"
 Cohesion: 0.10
@@ -75,25 +79,25 @@ Nodes (29): grammy, lightweight-charts, dependencies, grammy, lightweight-charts
 Cohesion: 0.12
 Nodes (15): DOM, ES2023, node, scripts/**/*.ts, src/**/*.ts, compilerOptions, lib, module (+7 more)
 
-### Community 4 - "run.ts"
+### Community 4 - "hl.ts"
 Cohesion: 0.06
-Nodes (65): main(), SECONDS, main(), money(), collectMarket(), MARKET_TICK_MS, MarketSnapshot, Book (+57 more)
+Nodes (67): main(), SECONDS, main(), money(), BOT_STATE_PATH, saveBotState(), collectMarket(), MARKET_TICK_MS (+59 more)
 
 ### Community 5 - "index.ts"
-Cohesion: 0.09
-Nodes (45): main(), markup, dailyLevels(), liquidityPools(), nearestUnswept(), POOL_MERGE_ATR, POOL_TOLERANCE_ATR, PoolInput (+37 more)
+Cohesion: 0.08
+Nodes (49): main(), Analysis, Candle, markup, dailyLevels(), liquidityPools(), nearestUnswept(), POOL_MERGE_ATR (+41 more)
 
 ### Community 6 - "caption.ts"
-Cohesion: 0.22
-Nodes (28): caption(), aligned(), captionPriceDecimals(), containing(), distancePct(), edgeBreak(), fmtPct(), fmtPrice() (+20 more)
+Cohesion: 0.21
+Nodes (29): caption(), priceRows(), aligned(), captionPriceDecimals(), containing(), distancePct(), edgeBreak(), fmtPct() (+21 more)
 
 ### Community 7 - "Market Radar"
 Cohesion: 0.40
 Nodes (4): Market Radar, Запуск, Источник данных, Состояние
 
 ### Community 9 - "bot.ts"
-Cohesion: 0.07
-Nodes (52): Analysis, analyze(), cardKey(), cards, chartPath(), createBot(), HELLO, keyboard() (+44 more)
+Cohesion: 0.08
+Nodes (48): analyze(), cardKey(), cards, chartPath(), createBot(), HELLO, keyboard(), mark() (+40 more)
 
 ### Community 10 - "chart.ts"
 Cohesion: 0.10
@@ -105,28 +109,44 @@ Nodes (13): applyTrade(), BIG_PRINT_USD, BookLevel, Bucket, BUCKET_MS, emptyBuck
 
 ### Community 12 - "metrics.ts"
 Cohesion: 0.12
-Nodes (35): Candle, ArchiveView, loadSeries(), Snapshot, whaleFlow, breakoutMetric(), clamp01(), fmtUsd() (+27 more)
+Nodes (34): AssetCtx, ArchiveView, loadSeries(), Snapshot, whaleFlow, breakoutMetric(), clamp01(), fmtUsd() (+26 more)
 
 ### Community 13 - "budget.test.ts"
 Cohesion: 0.14
 Nodes (21): AlertState, canAlert(), countLastHour(), EMPTY_ALERT_STATE, isNight(), minutes(), mskHour(), register() (+13 more)
 
+### Community 14 - "digest.ts"
+Cohesion: 0.12
+Nodes (31): aligned(), buildDigest(), clampHours(), CoinChange, Digest, DigestInput, EMPTY_SERIES, field() (+23 more)
+
+### Community 15 - "scorecard.ts"
+Cohesion: 0.11
+Nodes (26): buildScorecard(), cell(), fmtMove(), Horizon, HORIZONS, keyOf(), loadBars(), maturedMoves() (+18 more)
+
+### Community 16 - "digest.test.ts"
+Cohesion: 0.19
+Nodes (9): Coins, edgeCoins(), MOVES, net, NOW_MS, OI_END, snapshot(), writeArchive() (+1 more)
+
+### Community 17 - "events.ts"
+Cohesion: 0.60
+Nodes (4): alertsOf(), candidatesOf(), readEvents(), ScanEvent
+
 ## Knowledge Gaps
-- **110 isolated node(s):** `name`, `version`, `private`, `type`, `node` (+105 more)
+- **130 isolated node(s):** `name`, `version`, `private`, `type`, `node` (+125 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `markup` connect `index.ts` to `run.ts`, `caption.ts`, `bot.ts`, `chart.ts`, `metrics.ts`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `scanOnce()` connect `run.ts` to `index.ts`, `bot.ts`, `chart.ts`, `metrics.ts`, `budget.test.ts`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `Candle` connect `metrics.ts` to `run.ts`, `index.ts`, `bot.ts`, `chart.ts`, `budget.test.ts`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `AssetCtx` connect `metrics.ts` to `hl.ts`, `index.ts`, `caption.ts`, `bot.ts`, `budget.test.ts`, `digest.ts`, `digest.test.ts`?**
+  _High betweenness centrality (0.033) - this node is a cross-community bridge._
+- **Why does `Candle` connect `index.ts` to `hl.ts`, `bot.ts`, `chart.ts`, `metrics.ts`, `budget.test.ts`, `scorecard.ts`?**
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `dayFile()` connect `hl.ts` to `ws.ts`, `digest.ts`, `scorecard.ts`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _110 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _130 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `flowChart.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.0960960960960961 - nodes in this community are weakly interconnected._
 - **Should `flowCaption.ts` be split into smaller, more focused modules?**

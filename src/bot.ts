@@ -15,6 +15,10 @@ import { safeError } from './redact.js'
 import { registerFlow } from './botFlow.js'
 import { buildScorecard, renderScorecard } from './report/scorecard.js'
 import { buildDigest } from './report/digest.js'
+import { activeMutes, DEFAULT_MUTE_HOURS, loadTuning, mute, saveTuning, unmute } from './scan/tuning.js'
+import { ALERT_THRESHOLD } from './scan/score.js'
+import { loadSeries } from './scan/archive.js'
+import { readEvents } from './report/events.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
 type Timeframe = (typeof TIMEFRAMES)[number]
@@ -93,6 +97,12 @@ export function createBot(token: string): Bot {
   bot.command('ta', onTa)
   bot.command('score', onScore)
   bot.command('digest', onDigest)
+  bot.command('help', async (ctx) => { await ctx.reply(HELP) })
+  bot.command('status', onStatus)
+  bot.command('mute', onMute)
+  bot.command('unmute', onUnmute)
+  bot.command('quiet', onQuiet)
+  bot.command('threshold', onThreshold)
   bot.callbackQuery(/^ta:/, onCallback)
   registerFlow(bot)
   // Последняя сеть: апдейт теряется, процесс живёт.
@@ -147,6 +157,107 @@ async function onTa(ctx: CommandContext<Context>): Promise<void> {
     return
   }
   await sendCard(ctx, rawCoin.toUpperCase(), tf, 'short')
+}
+
+
+const HELP = [
+  'Что я умею.',
+  '',
+  '/ta SOL 1h — разбор структуры: зоны, ликвидность, границы суток. Кнопками меняются таймфрейм и подробность.',
+  '/flow SOL — что с потоком прямо сейчас: лента, дельта, ближний стакан.',
+  '/digest — сводка за последние часы. Утром и вечером присылаю сам.',
+  '/score — чего стоили мои пинги: движение после них против контрольной группы.',
+  '/status — живой ли я и что видел за сутки.',
+  '',
+  'Управление шумом:',
+  `/mute SOL 12 — молчать по монете 12 часов (по умолчанию ${DEFAULT_MUTE_HOURS}).`,
+  '/unmute SOL — вернуть монету.',
+  '/quiet — кто сейчас заглушён.',
+  '/threshold 0.35 — поднять или опустить порог пинга; без числа покажу текущий.',
+  '',
+  'Я не торгую и не советую. Всё, что присылаю, — факты с цифрами.',
+].join('\n')
+
+/**
+ * Живой ли радар. Главный вопрос владельца утром: он вообще смотрел, пока я
+ * спал, или процесс упал и молчание означает не спокойный рынок, а поломку.
+ */
+async function onStatus(ctx: CommandContext<Context>): Promise<void> {
+  try {
+    const now = Date.now()
+    const series = await loadSeries(48, now)
+    const events = await readEvents(24, now)
+    const alerts = events.filter((event) => event.kind === 'alert')
+    const last = series.snapshots.at(-1)
+    const ageMin = last === undefined ? null : (now / 1000 - last.t) / 60
+    const tuning = await loadTuning()
+    const muted = activeMutes(tuning, now)
+    const lines = [
+      'Состояние радара',
+      '',
+      ageMin === null
+        ? 'Записи рынка нет — регистратор не работает.'
+        : `Последний снимок рынка ${ageMin.toFixed(0)} мин назад.` +
+          (ageMin > 15 ? ' Это много: похоже, регистратор встал.' : ' Смотрю.'),
+      `Архив рынка: ${series.coverageHours.toFixed(1)} ч, снимков ${series.snapshots.length}.`,
+      `За сутки: рассмотрено ${events.length - alerts.length} кандидатов, отправлено ${alerts.length} пингов.`,
+      `Порог пинга ${(tuning.threshold ?? ALERT_THRESHOLD).toFixed(2)}.`,
+      muted.length === 0 ? 'Никто не заглушён.' : `Заглушено монет: ${muted.length} (/quiet — список).`,
+    ]
+    await ctx.reply(lines.join('\n'))
+  } catch (error) {
+    console.error(`статус: ${safeError(error)}`)
+    await ctx.reply('Не смог собрать состояние: ' + (error instanceof Error ? error.message : 'неизвестно'))
+  }
+}
+
+async function onMute(ctx: CommandContext<Context>): Promise<void> {
+  const [coin, rawHours] = ctx.match.trim().split(/\s+/)
+  if (coin === undefined || coin === '') {
+    await ctx.reply(`Нужен тикер: /mute SOL или /mute SOL 6. По умолчанию ${DEFAULT_MUTE_HOURS} ч.`)
+    return
+  }
+  const hours = Number(rawHours) > 0 ? Number(rawHours) : DEFAULT_MUTE_HOURS
+  await saveTuning(mute(await loadTuning(), coin, hours, Date.now()))
+  await ctx.reply(`Молчу по ${coin.toUpperCase()} ${hours} ч. Разбор по запросу это не отключает.`)
+}
+
+async function onUnmute(ctx: CommandContext<Context>): Promise<void> {
+  const coin = ctx.match.trim().split(/\s+/)[0]
+  if (coin === undefined || coin === '') {
+    await ctx.reply('Нужен тикер: /unmute SOL')
+    return
+  }
+  await saveTuning(unmute(await loadTuning(), coin))
+  await ctx.reply(`${coin.toUpperCase()} снова в работе.`)
+}
+
+async function onQuiet(ctx: CommandContext<Context>): Promise<void> {
+  const list = activeMutes(await loadTuning(), Date.now())
+  if (list.length === 0) {
+    await ctx.reply('Никто не заглушён.')
+    return
+  }
+  const lines = list.map((item) => `  ${item.coin} — ещё ${item.hoursLeft.toFixed(1)} ч`)
+  await ctx.reply(['Заглушены:', ...lines].join('\n'))
+}
+
+async function onThreshold(ctx: CommandContext<Context>): Promise<void> {
+  const tuning = await loadTuning()
+  const raw = ctx.match.trim()
+  if (raw === '') {
+    const current = tuning.threshold ?? ALERT_THRESHOLD
+    const origin = tuning.threshold === null ? 'по умолчанию, откалиброван по распределению' : 'выставлен вручную'
+    await ctx.reply(`Порог пинга ${current.toFixed(2)} (${origin}).\nВыше — реже и увереннее, ниже — чаще и шумнее.`)
+    return
+  }
+  const value = Number(raw)
+  if (!Number.isFinite(value) || value <= 0 || value >= 1) {
+    await ctx.reply('Порог — число между 0 и 1, например 0.35.')
+    return
+  }
+  await saveTuning({ ...tuning, threshold: value })
+  await ctx.reply(`Порог ${value.toFixed(2)}. Вернуть к расчётному: /threshold 0.30`)
 }
 
 /** Табель триггеров: чего стоили пинги. Считает по собственному архиву. */

@@ -258,5 +258,35 @@
     "mtime": 1787857078.7927163,
     "ast_hash": "e7d457676fd472817fe7228a760eb18b",
     "semantic_hash": ""
+  },
+  "src/report/digest.test.ts": {
+    "mtime": 1787862851.726682,
+    "ast_hash": "3eee2ce7e73fedc1dea27874a81e99ec",
+    "semantic_hash": ""
+  },
+  "src/report/digest.ts": {
+    "mtime": 1787862744.2073119,
+    "ast_hash": "60ef1edc7cb8a2435f236603083f538c",
+    "semantic_hash": ""
+  },
+  "src/report/events.test.ts": {
+    "mtime": 1787862547.2080934,
+    "ast_hash": "4681e84e073233ac2ce2ee9198a87945",
+    "semantic_hash": ""
+  },
+  "src/report/events.ts": {
+    "mtime": 1787862553.589995,
+    "ast_hash": "3c3c4ac97234d56afae0a7ec08802c61",
+    "semantic_hash": ""
+  },
+  "src/report/scorecard.test.ts": {
+    "mtime": 1787862683.1265185,
+    "ast_hash": "884f35b135613fdfe335a85e3cd06d32",
+    "semantic_hash": ""
+  },
+  "src/report/scorecard.ts": {
+    "mtime": 1787862569.2848275,
+    "ast_hash": "52520a0fba8ca851a9c00eab2dc75ed6",
+    "semantic_hash": ""
   }
 }

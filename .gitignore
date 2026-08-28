@@ -3,3 +3,4 @@ state/
 *.log
 .env
 out/
+logs/

@@ -31,6 +31,21 @@ async function shutdown(signal: string): Promise<void> {
 process.on('SIGINT', () => void shutdown('SIGINT'))
 process.on('SIGTERM', () => void shutdown('SIGTERM'))
 
+// Меню по нажатию на «/» в телеграме. Без него команды надо помнить наизусть,
+// а список из восьми штук наизусть не держит никто.
+await bot.api.setMyCommands([
+  { command: 'ta', description: 'разбор структуры: /ta SOL 1h' },
+  { command: 'flow', description: 'поток прямо сейчас: /flow SOL' },
+  { command: 'digest', description: 'сводка по рынку за последние часы' },
+  { command: 'score', description: 'чего стоили мои пинги' },
+  { command: 'mute', description: 'молчать по монете: /mute SOL 12' },
+  { command: 'unmute', description: 'вернуть монету: /unmute SOL' },
+  { command: 'quiet', description: 'кто сейчас заглушён' },
+  { command: 'threshold', description: 'порог пинга: /threshold 0.35' },
+  { command: 'status', description: 'живой ли я и что видел за сутки' },
+  { command: 'help', description: 'что я умею' },
+])
+
 const me = await bot.api.getMe()
 console.log(`бот @${me.username} запущен, жду сообщений`)
 await bot.start()

@@ -13,6 +13,7 @@ import { loadSeries, valueAt, whaleFlow, type ArchiveView } from './archive.js'
 import { metricsFor } from './metrics.js'
 import { scoreOf, ALERT_THRESHOLD, type Scored } from './score.js'
 import { canAlert, register, EMPTY_ALERT_STATE, type AlertState } from './budget.js'
+import { isMuted, loadTuning } from './tuning.js'
 import { appendLine, dayFile, readJson, writeJson, STATE_DIR } from '../store/ndjson.js'
 import { redact } from '../redact.js'
 import { join } from 'node:path'
@@ -133,6 +134,10 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
   const btcBars = await fetchCandles('BTC', TF, nowSec - TF_SECONDS * BARS, nowMs)
 
   let state = await loadAlertState()
+  // Настройки перечитываются на каждом тике: команда из чата приходит в другой
+  // процесс, и держать их в памяти значило бы не услышать владельца вовсе.
+  const tuning = await loadTuning()
+  const threshold = tuning.threshold ?? ALERT_THRESHOLD
   const skipped: Record<string, string> = {}
   let passed = 0
   let sent = 0
@@ -161,8 +166,12 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
       skipped[ctx.coin] = `измерено метрик ${scored.available}, скор недостоверен`
       continue
     }
-    if (scored.score < ALERT_THRESHOLD) {
-      skipped[ctx.coin] = `скор ${scored.score.toFixed(2)} ниже порога`
+    if (scored.score < threshold) {
+      skipped[ctx.coin] = `скор ${scored.score.toFixed(2)} ниже порога ${threshold.toFixed(2)}`
+      continue
+    }
+    if (isMuted(tuning, ctx.coin, nowMs)) {
+      skipped[ctx.coin] = 'монета заглушена владельцем'
       continue
     }
     passed += 1
