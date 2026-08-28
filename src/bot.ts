@@ -17,7 +17,7 @@ import { buildScorecard, renderScorecard } from './report/scorecard.js'
 import { buildDigest } from './report/digest.js'
 import { activeMutes, DEFAULT_MUTE_HOURS, loadTuning, mute, saveTuning, unmute } from './scan/tuning.js'
 import { ALERT_THRESHOLD } from './scan/score.js'
-import { loadSeries, valueAt } from './scan/archive.js'
+import { loadSeries, valueAt, whaleFlow } from './scan/archive.js'
 import { readEvents } from './report/events.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
@@ -72,8 +72,10 @@ interface Analysis {
   readonly bars: Candle[]
   readonly markup: Markup
   readonly ctx: AssetCtx
-  /** Кита в подпись пока никто не собирает — поле ждёт своего поставщика. */
+  /** Позиции китов: другой смысл, чем поток, поставщик появится позже. */
   readonly whales: WhaleSummary | null
+  /** Приток денег китов в монету за 15 минут, час и четыре часа. */
+  readonly whaleFlow: { m15: number, h1: number, h4: number } | null
   readonly width: number
   readonly height: number
 }
@@ -441,15 +443,18 @@ async function analyze(coin: string, tf: Timeframe): Promise<Analysis> {
   }
   const nowMs = Date.now()
   const nowSec = Math.floor(nowMs / 1000)
-  const [recent, daily] = await Promise.all([
+  const [recent, daily, flow] = await Promise.all([
     fetchCandles(ctx.coin, tf, nowSec - TF_SECONDS[tf] * (BARS + BARS_MARGIN), nowMs),
     fetchCandles(ctx.coin, '1d', nowSec - DAILY_LOOKBACK_SEC, nowMs),
+    // Поток китов — из собственного архива. Его отсутствие не повод ронять
+    // карточку: подпись просто не покажет раздел.
+    whaleFlow(ctx.coin, nowMs).catch(() => null),
   ])
   const bars = recent.slice(-BARS)
   if (bars.length === 0) throw new Error('биржа не отдала ни одного закрытого бара')
   return {
     coin: ctx.coin, interval: tf, bars, markup: markup(bars, daily.at(-1)),
-    ctx, whales: null, width: CHART_WIDTH, height: CHART_HEIGHT,
+    ctx, whales: null, whaleFlow: flow, width: CHART_WIDTH, height: CHART_HEIGHT,
   }
 }
 
