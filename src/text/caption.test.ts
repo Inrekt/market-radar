@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { AssetCtx } from '../hl.js'
 import type { Markup } from '../ta/index.js'
 import type { Dir, Line, LineKind, Zone, ZoneKind } from '../ta/types.js'
-import { fmtMoney, longCaption, shortCaption, type CaptionInput, type WhaleSummary } from './caption.js'
+import { fmtMoney, longCaption, shortCaption, type CaptionInput, type WhaleFlowInput, type WhaleSummary } from './caption.js'
 
 const zone = (kind: ZoneKind, dir: Dir, lo: number, hi: number, mitigated = false): Zone =>
   ({ kind, dir, from: 0, lo, hi, mitigated })
@@ -22,12 +22,17 @@ const CTX: AssetCtx = {
   dayNtlVlm: 1_240_000_000, markPx: 97, prevDayPx: 95,
 }
 const WHALES: WhaleSummary = { positions: 12, longUsd: 4_200_000, shortUsd: 1_100_000, avgEntry: 95.8 }
+// Поток: свежие 15 минут против четырёхчасового притока — направление берётся
+// именно из четырёх часов, и на этих числах видно, что не из пятнадцати минут.
+const FLOW: WhaleFlowInput = { m15: -250_000, h1: 1_200_000, h4: 4_800_000 }
 
 const input = (over: Partial<CaptionInput> = {}): CaptionInput =>
   ({ coin: 'SOL', interval: '15m', markup: MARKUP, ctx: CTX, whales: WHALES, ...over })
 /** Цена внутри FVG: тот случай, ради которого краткая подпись и заводилась. */
 const inside = (): CaptionInput => input({ markup: { ...MARKUP, price: 96.2 } })
 const bare = (): CaptionInput => input({ ctx: null, whales: null })
+/** Поток есть: поставщик появился и отдал три окна. */
+const withFlow = (over: Partial<CaptionInput> = {}): CaptionInput => input({ whaleFlow: FLOW, ...over })
 
 describe('денежный формат', () => {
   it('от миллиона переходит на сокращение', () => {
@@ -90,8 +95,31 @@ describe('краткая подпись', () => {
     expect(text).not.toContain('Киты')
   })
 
+  it('поток китов печатает отдельной строкой: три окна деньгами и направление', () => {
+    const text = shortCaption(withFlow())
+    expect(text).toContain('Поток китов: 15м -$250 000 · 1ч +$1.2M · 4ч +$4.8M — за 4 часа в лонг')
+  })
+
+  it('направление потока берёт из четырёх часов, а не из последних пятнадцати минут', () => {
+    const out = shortCaption(withFlow({ whaleFlow: { m15: 900_000, h1: 400_000, h4: -3_000_000 } }))
+    expect(out).toContain('4ч -$3M — за 4 часа в шорт')
+  })
+
+  it('нулевой поток за четыре часа называет отсутствием китов, а не нейтралитетом', () => {
+    expect(shortCaption(withFlow({ whaleFlow: { m15: 0, h1: 0, h4: 0 } }))).toContain('за 4 часа потока нет')
+  })
+
+  it('без потока строки о нём нет — ни при отсутствии поля, ни при null', () => {
+    expect(shortCaption(input())).not.toContain('Поток китов')
+    expect(shortCaption(input({ whaleFlow: null }))).not.toContain('Поток китов')
+  })
+
+  it('со всеми данными разом всё равно умещается в восемь строк', () => {
+    expect(shortCaption(withFlow({ markup: { ...MARKUP, price: 96.2 } })).split('\n').length).toBeLessThanOrEqual(8)
+  })
+
   it('не оставляет NaN и undefined ни с данными, ни без них', () => {
-    for (const text of [shortCaption(input()), shortCaption(bare()), shortCaption(inside())]) {
+    for (const text of [shortCaption(input()), shortCaption(bare()), shortCaption(inside()), shortCaption(withFlow())]) {
       expect(text).not.toContain('NaN')
       expect(text).not.toContain('undefined')
     }
@@ -199,8 +227,33 @@ describe('подробная подпись', () => {
     expect(text).not.toContain('ЛИКВИДНОСТЬ')
   })
 
+  it('поток китов идёт отдельным разделом: три окна деньгами и что значит знак', () => {
+    const text = longCaption(withFlow())
+    expect(text).toContain('ПОТОК КИТОВ')
+    expect(text).toMatch(/за 15 минут\s+-\$250 000/)
+    expect(text).toMatch(/за час\s+\+\$1\.2M/)
+    expect(text).toMatch(/за 4 часа\s+\+\$4\.8M/)
+    expect(text).toContain('за 4 часа деньги идут в лонг — набирают лонг или закрывают шорт')
+  })
+
+  it('отток за четыре часа объясняет обеими трактовками знака', () => {
+    const text = longCaption(withFlow({ whaleFlow: { m15: -100_000, h1: -900_000, h4: -3_000_000 } }))
+    expect(text).toContain('за 4 часа деньги идут в шорт — набирают шорт или закрывают лонг')
+  })
+
+  it('раздел про поток не выдумывается ни при отсутствии поля, ни при null', () => {
+    expect(longCaption(input())).not.toContain('ПОТОК КИТОВ')
+    expect(longCaption(input({ whaleFlow: null }))).not.toContain('ПОТОК КИТОВ')
+  })
+
+  it('поток печатается и без позиций китов: это разные поставщики', () => {
+    const text = longCaption(withFlow({ whales: null }))
+    expect(text).not.toContain('\nКИТЫ')
+    expect(text).toContain('ПОТОК КИТОВ')
+  })
+
   it('не оставляет NaN и undefined ни с данными, ни без них', () => {
-    for (const text of [longCaption(input()), longCaption(bare()), longCaption(inside())]) {
+    for (const text of [longCaption(input()), longCaption(bare()), longCaption(inside()), longCaption(withFlow())]) {
       expect(text).not.toContain('NaN')
       expect(text).not.toContain('undefined')
     }

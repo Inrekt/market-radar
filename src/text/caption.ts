@@ -14,12 +14,27 @@ export interface WhaleSummary {
   readonly avgEntry: number
 }
 
+/**
+ * Приток денег китов в монету за три окна, в долларах и со знаком: плюс — они
+ * набирают лонг или закрывают шорт. Это не то же самое, что WhaleSummary выше:
+ * там срез открытых позиций, здесь движение за отрезок времени. Форма повторяет
+ * WhaleFlow из архива сканера намеренно — иначе подписи, которым нужен только
+ * текст, потянули бы за собой модуль, который ходит на диск.
+ */
+export interface WhaleFlowInput {
+  readonly m15: number
+  readonly h1: number
+  readonly h4: number
+}
+
 export interface CaptionInput {
   readonly coin: string
   readonly interval: string
   readonly markup: Markup
   readonly ctx: AssetCtx | null
   readonly whales: WhaleSummary | null
+  /** Поток китов; поставщика может не быть — тогда раздела просто нет. */
+  readonly whaleFlow?: WhaleFlowInput | null
 }
 
 const MAX_SHORT_LINES = 8 // больше восьми строк под картинкой не читают — пролистывают
@@ -168,8 +183,44 @@ function whaleFacts(whales: WhaleSummary, price: number, decimals?: number): str
   return [...facts, `средний вход ${fmtEntry} (${drift} к цене)`]
 }
 
+/** Поток печатается со знаком: без плюса приток не отличить от оттока. */
+function fmtFlow(value: number): string {
+  return value > 0 ? `+${fmtMoney(value)}` : fmtMoney(value)
+}
+
+/**
+ * Сторону потока читаем по четырёхчасовому окну: пятнадцать минут — это одна
+ * крупная заявка и шум, а четыре часа уже показывают, куда встают деньги.
+ */
+function flowSide(flow: WhaleFlowInput): 'long' | 'short' | null {
+  if (!Number.isFinite(flow.h4) || flow.h4 === 0) return null
+  return flow.h4 > 0 ? 'long' : 'short'
+}
+
+/** Хвост краткой строки: направление одним словом, подробности — в разделе. */
+const FLOW_TAIL: Record<'long' | 'short', string> = { long: 'в лонг', short: 'в шорт' }
+/** Знак не отличает набор позиции от закрытия встречной — называем обе трактовки. */
+const FLOW_MEANING: Record<'long' | 'short', string> = {
+  long: 'деньги идут в лонг — набирают лонг или закрывают шорт',
+  short: 'деньги идут в шорт — набирают шорт или закрывают лонг',
+}
+/** Ноль за четыре часа — это «китов тут нет», а не «поток нейтральный». */
+const FLOW_NONE = 'потока нет'
+
+function flowRows(flow: WhaleFlowInput): string[] {
+  const side = flowSide(flow)
+  return [
+    ...aligned([
+      ['за 15 минут', fmtFlow(flow.m15)],
+      ['за час', fmtFlow(flow.h1)],
+      ['за 4 часа', fmtFlow(flow.h4)],
+    ]),
+    `  за 4 часа ${side === null ? FLOW_NONE : FLOW_MEANING[side]}`,
+  ]
+}
+
 export function shortCaption(input: CaptionInput): string {
-  const { markup: mk, ctx, whales } = input
+  const { markup: mk, ctx, whales, whaleFlow } = input
   const price = mk.price
 
   // Собираем все цены из подписи для определения единого количества знаков
@@ -217,6 +268,11 @@ export function shortCaption(input: CaptionInput): string {
       ? whaleFacts(whales, price, decimals).join(' · ')
       : 'открытых позиций нет'
     out.push(`Киты: ${whaleFacts_}`)
+  }
+  if (whaleFlow) {
+    const side = flowSide(whaleFlow)
+    out.push(`Поток китов: 15м ${fmtFlow(whaleFlow.m15)} · 1ч ${fmtFlow(whaleFlow.h1)}`
+      + ` · 4ч ${fmtFlow(whaleFlow.h4)} — за 4 часа ${side === null ? FLOW_NONE : FLOW_TAIL[side]}`)
   }
   return out.slice(0, MAX_SHORT_LINES).join('\n')
 }
@@ -333,6 +389,7 @@ export function longCaption(input: CaptionInput): string {
     const facts = whales.positions > 0 ? whaleFacts(whales, mk.price, decimals) : ['открытых позиций нет']
     blocks.push(...section('КИТЫ', facts.map((fact) => `  ${fact}`)))
   }
+  if (input.whaleFlow) blocks.push(...section('ПОТОК КИТОВ', flowRows(input.whaleFlow)))
   blocks.push(...section('ЧТО ОТМЕНЯЕТ КАРТИНУ', invalidations(mk, whales, decimals).map((text) => `  · ${text}`)))
   return blocks.join('\n\n')
 }

@@ -17,7 +17,7 @@ import { buildScorecard, renderScorecard } from './report/scorecard.js'
 import { buildDigest } from './report/digest.js'
 import { activeMutes, DEFAULT_MUTE_HOURS, loadTuning, mute, saveTuning, unmute } from './scan/tuning.js'
 import { ALERT_THRESHOLD } from './scan/score.js'
-import { loadSeries } from './scan/archive.js'
+import { loadSeries, valueAt } from './scan/archive.js'
 import { readEvents } from './report/events.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
@@ -147,8 +147,11 @@ async function refuse(ctx: Context): Promise<void> {
 
 async function onTa(ctx: CommandContext<Context>): Promise<void> {
   const [rawCoin, rawTf] = ctx.match.trim().split(/\s+/)
+  // Без тикера показываем, что сейчас движется, кнопками. Требовать, чтобы
+  // владелец заранее знал, на что смотреть, — это перекладывать на него ровно
+  // ту работу, ради которой радар и заведён.
   if (rawCoin === undefined || rawCoin === '') {
-    await ctx.reply(TA_USAGE)
+    await suggestMovers(ctx)
     return
   }
   const tf = parseTimeframe(rawTf)
@@ -286,6 +289,44 @@ async function onDigest(ctx: CommandContext<Context>): Promise<void> {
   }
 }
 
+/** Сколько монет предлагать кнопками: больше ряда в три кнопки уже мельтешит. */
+const MOVER_BUTTONS = 6
+
+/** Что сейчас движется — по архиву за час, с оборотом от порога ликвидности. */
+async function suggestMovers(ctx: Context): Promise<void> {
+  try {
+    const now = Date.now()
+    const [ctxs, series] = await Promise.all([fetchAssetCtxs(), loadSeries(3, now)])
+    const past = series.at(60)
+    const moves = ctxs
+      .filter((item) => item.dayNtlVlm >= MOVER_MIN_VOLUME_USD)
+      .map((item) => {
+        const before = valueAt(past, item.coin, 0)
+        return { coin: item.coin, move: before !== null && before > 0 ? item.markPx / before - 1 : 0 }
+      })
+      .filter((item) => item.move !== 0)
+      .sort((a, b) => Math.abs(b.move) - Math.abs(a.move))
+      .slice(0, MOVER_BUTTONS)
+
+    if (moves.length === 0) {
+      await ctx.reply(`${TA_USAGE}\n\nЧто движется — пока не скажу: архива за час ещё нет.`)
+      return
+    }
+    const kb = new InlineKeyboard()
+    moves.forEach((item, index) => {
+      kb.text(`${item.coin} ${(item.move * 100).toFixed(1)}%`, `ta:${item.coin}:${DEFAULT_TF}:short`)
+      if (index % 3 === 2) kb.row()
+    })
+    await ctx.reply('За последний час сильнее всего сдвинулись эти. Нажми — разберу.', { reply_markup: kb })
+  } catch (error) {
+    console.error(`подсказка движения: ${safeError(error)}`)
+    await ctx.reply(TA_USAGE)
+  }
+}
+
+/** Тот же порог, что у сканера: ниже него проценты рисует неликвид. */
+const MOVER_MIN_VOLUME_USD = 5_000_000
+
 /** Пропущенный аргумент — не ошибка, а «как обычно»; чужой — ошибка. */
 function parseTimeframe(value: string | undefined): Timeframe | null {
   if (value === undefined || value === '') return DEFAULT_TF
@@ -385,7 +426,19 @@ async function analyze(coin: string, tf: Timeframe): Promise<Analysis> {
   // Тикер сверяем со списком биржи, а не с регистром ввода: у Hyperliquid есть
   // символы вида kPEPE, и «KPEPE» она не знает.
   const ctx = (await fetchAssetCtxs()).find((item) => item.coin.toUpperCase() === coin)
-  if (ctx === undefined) throw new Error('такой монеты на Hyperliquid нет')
+  if (ctx === undefined) {
+    // Подсказываем близкие тикеры: промах в одну букву иначе выглядит как
+    // «монеты нет», и владелец решает, что бот не умеет её смотреть.
+    const near = (await fetchAssetCtxs())
+      .map((item) => item.coin)
+      .filter((name) => name.toUpperCase().includes(coin) || coin.includes(name.toUpperCase()))
+      .slice(0, 5)
+    throw new Error(
+      near.length === 0
+        ? 'такой монеты на Hyperliquid нет'
+        : `такой монеты нет. Может быть: ${near.join(', ')}`,
+    )
+  }
   const nowMs = Date.now()
   const nowSec = Math.floor(nowMs / 1000)
   const [recent, daily] = await Promise.all([

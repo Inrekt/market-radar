@@ -132,8 +132,29 @@ const MIN_RANGE_FRAC = 0.002
 
 /** Толщина линий: полупрозрачные цвета темы при 1px просто исчезают. */
 const LINE_PX = 1.5
-/** Отступ линии CVD от краёв панели — иначе она липнет к столбикам дельты. */
+/**
+ * Отступ линии CVD от краёв панели — иначе она липнет к столбикам дельты. Он же
+ * толщина полосы «линия ушла за край»: полоса ровно заполняет зазор между
+ * прижатой линией и границей панели, и читается как продолжение линии наружу.
+ */
 const CVD_INSET_PX = 3
+/**
+ * Сколько точек линии CVD позволено увести за край шкалы. Накопленная дельта —
+ * траектория, а не выборка: крупный вынос сдвигает её разом и НАВСЕГДА, дальше
+ * она честно живёт на новом уровне. Поэтому за кадр может уйти только короткий
+ * участок — десятая часть окна, шесть минут часа. Всё, что длиннее, — уже не
+ * выброс, а поведение рынка, и прятать его нельзя ни ради какого масштаба.
+ */
+const CVD_TRIM_MAX_FRAC = 0.1
+/**
+ * Ради чего обрезаем. На целой шкале основная часть линии занимает ту долю
+ * высоты панели, которую ей оставил вынос. На живых замерах SOL и HYPE один
+ * трёхминутный вынос оставлял остальным 55 минутам 35–40% высоты — на такой
+ * полоске форма уже не читается, а на 65% и выше читается. Ниже порога обрезка
+ * окупается, выше — нет: нетронутая шкала честнее любой пометки, и трогать её
+ * незачем.
+ */
+const CVD_BULK_MIN_FRAC = 0.65
 /** Ненулевая дельта обязана быть видна, даже когда она в тысячу раз меньше пиковой. */
 const MIN_BAR_PX = 1
 
@@ -274,23 +295,102 @@ function priceDomain(prices: readonly number[]): { readonly lo: number; readonly
   return { lo: lo - pad, hi: hi + pad }
 }
 
+/** Границы шкалы CVD. clipped — часть линии в них не поместилась. */
+interface CvdDomain {
+  readonly lo: number
+  readonly hi: number
+  readonly clipped: boolean
+}
+
+/**
+ * Границы шкалы накопленной дельты.
+ *
+ * Целый размах отдавать шкале нельзя: один крупный вынос уводит CVD разом на
+ * несколько миллионов, шкала растягивается под него, и поведение остальных
+ * пятидесяти пяти минут сплющивается в нитку. Замер SOL: провал последних трёх
+ * минут забирал 60% высоты панели, а середина часа превращалась в прямую.
+ *
+ * Выбран самый узкий интервал, вмещающий почти все точки, и берётся он не
+ * фиксированным перцентилем, а МИНИМАЛЬНОЙ обрезкой, которая даёт результат:
+ * точки отбрасываются по одной, пока остаток не начнёт занимать хотя бы
+ * CVD_BULK_MIN_FRAC высоты. Причина в том, что порог должен ловить форму
+ * события, а не его длину. Симметричный перцентиль отрезал бы и сверху, и снизу,
+ * хотя вынос почти всегда односторонний, — скользящее окно само сдвигается на ту
+ * сторону, где выброса нет.
+ *
+ * Если обрезка так и не окупилась (гладкий тренд: сколько ни отрезай, размах
+ * падает пропорционально), возвращается целый размах — на ровных данных карточка
+ * ведёт себя ровно как раньше. Обрезанный участок НЕ пропадает: линия прижимается
+ * к краю, а cvdOffScale ставит под ней полосу и подписывает достигнутое значение.
+ * Сами данные при этом не трогаются — меняется только шкала.
+ */
+function cvdDomain(values: readonly number[]): CvdDomain | null {
+  // Копия, а не сортировка на месте: массив CVD принадлежит сводке, и её порядок
+  // ещё нужен линии — там точка i обязана стоять над корзиной i.
+  const sorted = values.filter((value) => Number.isFinite(value)).sort((a, b) => a - b)
+  const count = sorted.length
+  if (count < 2) return null
+  const lo = sorted[0]!
+  const hi = sorted[count - 1]!
+  const full = hi - lo
+  // Ровная линия (или одно значение на всё окно) шкалы не имеет вовсе.
+  if (!(full > 0)) return null
+
+  const maxDrop = Math.floor(count * CVD_TRIM_MAX_FRAC)
+  for (let drop = 1; drop <= maxDrop; drop++) {
+    const keep = count - drop
+    if (keep < 2) break
+    // Самое узкое окно из keep подряд идущих значений: где бы ни сидел выброс,
+    // окно уедет от него само.
+    let bestLo = sorted[0]!
+    let bestHi = sorted[keep - 1]!
+    let best = bestHi - bestLo
+    for (let i = 1; i + keep <= count; i++) {
+      const from = sorted[i]!
+      const to = sorted[i + keep - 1]!
+      if (to - from < best) {
+        best = to - from
+        bestLo = from
+        bestHi = to
+      }
+    }
+    if (best / full < CVD_BULK_MIN_FRAC) return { lo: bestLo, hi: bestHi, clipped: true }
+  }
+  return { lo, hi, clipped: false }
+}
+
+/** Шкала CVD: перевод значения в y плюс сами границы — по ним ищут ушедшее за край. */
+interface CvdScale {
+  /**
+   * Значение → y, уже прижатое к полосе. Прижатие здесь, а не в вызывающем коде:
+   * иначе ушедшая за край точка нарисовалась бы поверх подписей и соседней панели.
+   */
+  readonly y: (value: number) => number
+  readonly lo: number
+  readonly hi: number
+  readonly clipped: boolean
+}
+
 /**
  * Своя шкала для накопленной дельты, не общая со столбиками: дельта за десять
  * секунд и накопленная за час — разные порядки, на одной шкале одна из них
  * превращается в плоскую нитку. Читают у CVD форму, а число вынесено в подпись.
  */
-function cvdScale(cvd: readonly number[], y0: number, y1: number): (value: number) => number {
+function cvdScale(cvd: readonly number[], y0: number, y1: number): CvdScale {
   const top = y0 + CVD_INSET_PX
   const bottom = y1 - CVD_INSET_PX
-  let min = Infinity
-  let max = -Infinity
-  for (const value of cvd) {
-    if (!Number.isFinite(value)) continue
-    min = Math.min(min, value)
-    max = Math.max(max, value)
+  const domain = cvdDomain(cvd)
+  if (domain === null) {
+    const mid = (top + bottom) / 2
+    return { y: () => mid, lo: 0, hi: 0, clipped: false }
   }
-  if (!Number.isFinite(min) || max - min <= 0) return () => (top + bottom) / 2
-  return (value) => bottom - ((value - min) / (max - min)) * (bottom - top)
+  const { lo, hi } = domain
+  return {
+    y: (value) => clamp(bottom - ((value - lo) / (hi - lo)) * (bottom - top), top, bottom),
+    lo,
+    hi,
+    clipped: domain.clipped,
+  }
 }
 
 /** Рамка кадра: где какая панель и сколько места осталось графику цены. */
@@ -662,6 +762,109 @@ function deltaBars(
   return bars
 }
 
+/** Участок, на котором линия CVD не поместилась в шкалу: от x до x по времени. */
+interface OffRun {
+  readonly x0: number
+  readonly x1: number
+}
+
+/**
+ * Пометка ушедшего за край CVD. Обрезать шкалу и промолчать нельзя: прижатая к
+ * границе линия читается как «дельта перестала меняться» — ровно противоположно
+ * тому, что произошло на самом деле. Поэтому под каждым таким участком лежит
+ * полоса в цвете линии (заливка зоны — та же лазурь вдвое тише самой линии), а у
+ * самой дальней точки стоит подпись с достигнутым значением. Владелец видит
+ * одновременно и что вынос был, и куда он дошёл, и форму остального часа.
+ *
+ * Подпись одна на сторону, по крайнему значению: выносов за окно бывает
+ * несколько, и подпись у каждого превратила бы низ панели в текст. Полосы при
+ * этом рисуются у всех — где именно линия выходила за край, видно по ним.
+ */
+function cvdOffScale(
+  buckets: readonly FlowBucket[],
+  cvd: readonly number[],
+  scale: CvdScale,
+  frame: Frame,
+  timeX: (t: number) => number,
+  theme: Theme,
+): Axis {
+  if (!scale.clipped) return { rects: [], labels: [] }
+
+  const below: OffRun[] = []
+  const above: OffRun[] = []
+  let worstLow = Infinity
+  let worstLowX = 0
+  let worstHigh = -Infinity
+  let worstHighX = 0
+  let openSide: 'below' | 'above' | null = null
+  let openX0 = 0
+  let lastX1 = 0
+
+  const close = (): void => {
+    if (openSide === 'below') below.push({ x0: openX0, x1: lastX1 })
+    else if (openSide === 'above') above.push({ x0: openX0, x1: lastX1 })
+    openSide = null
+  }
+
+  buckets.forEach((bucket, index) => {
+    const value = cvd[index] ?? 0
+    const side = value < scale.lo ? 'below' : value > scale.hi ? 'above' : null
+    // Полоса кроет корзину целиком: одна ушедшая корзина обязана быть шириной со
+    // свой столбик дельты, иначе на часе она выродится в невидимый волосок.
+    const x0 = timeX(bucket.t)
+    const x1 = timeX(bucket.t + BUCKET_MS)
+    if (side !== openSide) {
+      // Закрываем предыдущий участок ДО обновления lastX1: он кончился на прошлой корзине.
+      close()
+      if (side !== null) {
+        openSide = side
+        openX0 = x0
+      }
+    }
+    lastX1 = x1
+    const mid = (x0 + x1) / 2
+    if (side === 'below' && value < worstLow) {
+      worstLow = value
+      worstLowX = mid
+    }
+    if (side === 'above' && value > worstHigh) {
+      worstHigh = value
+      worstHighX = mid
+    }
+  })
+  close()
+
+  const rects: Rect[] = []
+  const bands = (runs: readonly OffRun[], y: number): void => {
+    for (const run of runs) {
+      const x0 = clamp(run.x0, frame.plotX0, frame.plotX1)
+      const x1 = clamp(run.x1, frame.plotX0, frame.plotX1)
+      if (x1 <= x0) continue
+      rects.push({ x: x0, y, w: x1 - x0, h: CVD_INSET_PX, c: theme.zoneFvg })
+    }
+  }
+  bands(below, frame.lowY1 - CVD_INSET_PX)
+  bands(above, frame.lowY0)
+
+  const labels: Label[] = []
+  const mark = (text: string, x: number, y: number): void => {
+    // Оценка полуширины по CHAR_W_PX: подпись у самого края окна должна отойти
+    // внутрь целиком, а не обрезаться на середине числа.
+    const half = (text.length * CHAR_W_PX) / 2
+    labels.push({ x: clamp(x, frame.plotX0 + half, frame.plotX1 - half), y, s: text, a: 'center' })
+  }
+  // Словарь тот же, что у ушедшей за кадр ликвидности в лестнице стакана: на одной
+  // карточке «ниже кадра» обязано значить одно и то же. Имя показателя в подписи —
+  // чтобы две разные пометки на одном кадре не читались как одна.
+  if (below.length > 0) {
+    mark(`CVD ниже кадра ${signedMoney(worstLow)}`, worstLowX, frame.lowY1 - CVD_INSET_PX - LABEL_FONT_PX)
+  }
+  if (above.length > 0) {
+    mark(`CVD выше кадра ${signedMoney(worstHigh)}`, worstHighX, frame.lowY0 + CVD_INSET_PX + LABEL_FONT_PX)
+  }
+  return { rects, labels }
+}
+
 /**
  * Нижняя строка карточки. Справа — сколько записи есть на самом деле: без неё
  * четыре минуты ленты выглядят так же убедительно, как сутки, и картинку читают
@@ -757,8 +960,8 @@ function scene(input: FlowChartInput, theme: Theme): Scene {
   rects.push(...time.rects)
   labels.push(...time.labels)
 
-  const cvdY = cvdScale(summary.cvd, frame.lowY0, frame.lowY1)
-  const lines = flowLines(buckets, summary.cvd, timeX, priceY, cvdY, theme)
+  const cvd = cvdScale(summary.cvd, frame.lowY0, frame.lowY1)
+  const lines = flowLines(buckets, summary.cvd, timeX, priceY, cvd.y, theme)
   const prints = printMarks(visible, timeX, priceY, theme)
 
   // Ноль дельты — единственная ось на карточке: без неё непонятно, вверх столбик
@@ -768,6 +971,12 @@ function scene(input: FlowChartInput, theme: Theme): Scene {
   // Столбик занимает свою корзину целиком, минус пиксель на просвет между соседями.
   const barW = Math.max(1, ((frame.plotX1 - frame.plotX0) * BUCKET_MS) / (t1 - t0) - 1)
   rects.push(...deltaBars(buckets, frame, timeX, barW, zeroY, theme))
+
+  // После столбиков: прямоугольники заливаются в порядке добавления, и столбик,
+  // дотянувшийся до края панели, закрасил бы полосу ушедшей за край линии.
+  const offScale = cvdOffScale(buckets, summary.cvd, cvd, frame, timeX, theme)
+  rects.push(...offScale.rects)
+  labels.push(...offScale.labels)
 
   labels.push(...captions(summary, width, height))
   return pack(input, theme, { rects, lines, prints, labels })

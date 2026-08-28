@@ -51,6 +51,28 @@ const ZONE_TITLE: Record<ZoneKind, string> = { FVG: 'FVG', IFVG: 'I-FVG', OB: 'O
 /** Минус — типографский U+2212: дефис в курсиве с засечками читается как перенос. */
 const SIGN = { up: ' +', dn: ' −' } as const
 
+/**
+ * Признак того, что зона продолжается за краем кадра. Стрелка стоит ПЕРЕД типом,
+ * а не после знака направления: «FVG − ↑» читалось бы как спор знака со стрелкой,
+ * а «↑ FVG −» — как указание, куда уходит сама зона. Набор тот же WGL4, что и
+ * типографский минус выше, поэтому стрелка переживает подмену Georgia на любой
+ * системный шрифт с засечками.
+ */
+const CUT_MARK = { up: '↑', dn: '↓', both: '↕' } as const
+
+/**
+ * Насколько заливка растворяется у среза. Прямоугольник с жёсткой кромкой ровно
+ * по границе кадра читается как декоративная плашка поверх графика, а не как
+ * уровень; 24 пикселя растушёвки хватает, чтобы глаз прочёл «полоса уходит за
+ * кадр», и мало, чтобы зона потеряла собственные границы.
+ */
+const ZONE_FADE_PX = 24
+/**
+ * Растушёвка включается только там, где видимая часть зоны вдвое выше самой
+ * растушёвки: у узкой полосы она съела бы всю заливку и оставила призрак.
+ */
+const ZONE_FADE_MIN_PX = ZONE_FADE_PX * 2
+
 export interface ChartInput {
   readonly coin: string
   readonly interval: string
@@ -246,6 +268,29 @@ function placeLabels(h) {
   }
 }
 
+/**
+ * Заливка зоны. У стороны, срезанной краем кадра, заливка растворяется: зона там
+ * не кончается, и ровная кромка по границе кадра соврала бы про уровень — а
+ * заодно превратила бы разметку в плашку поверх графика. Срез с обеих сторон
+ * растушёвывать нечем: такая зона накрывает весь кадр, и растворять пришлось бы
+ * её целиком.
+ */
+function zoneFill(zone, cutTop, cutBottom, height) {
+  if (cutTop === cutBottom || height < D.fadeMinPx) return 'background:' + zone.fill
+  return 'background:linear-gradient(' + (cutTop ? 'to top' : 'to bottom') + ','
+    + zone.fill + ' calc(100% - ' + D.fadePx + 'px),transparent)'
+}
+
+/**
+ * Рамка. По срезанной стороне её нет: линия ровно по краю кадра — ложная
+ * граница, глаз читает её как уровень, которого на этой цене не существует.
+ */
+function zoneBorder(zone, cutTop, cutBottom, cutLeft) {
+  return 'border:1px solid ' + zone.border
+    + (cutTop ? ';border-top:none' : '') + (cutBottom ? ';border-bottom:none' : '')
+    + (cutLeft ? ';border-left:none' : '')
+}
+
 function drawZone(zone, w, h) {
   const bar = D.bars[zone.from]
   if (!bar) return
@@ -255,14 +300,31 @@ function drawZone(zone, w, h) {
   // null означает, что цена или время вне видимого диапазона. Растянуть под
   // зону шкалу — значит поменять картинку ради разметки, поэтому просто молчим.
   if (x === null || yHi === null || yLo === null) return
-  const top = Math.max(0, Math.min(yHi, yLo))
-  const bottom = Math.min(h, Math.max(yHi, yLo))
+  const rawTop = Math.min(yHi, yLo)
+  const rawBottom = Math.max(yHi, yLo)
+  const top = Math.max(0, rawTop)
+  const bottom = Math.min(h, rawBottom)
   const left = Math.max(0, x)
   if (bottom <= top || left >= w) return
-  put('left:' + px(left) + ';top:' + px(top) + ';width:' + px(w - left) + ';height:' + px(bottom - top) +
-      ';background:' + zone.fill + ';border:1px solid ' + zone.border + ';box-sizing:border-box')
-  const inside = bottom - top >= D.minLabelPx
-  label(left + D.pad, inside ? top + D.pad : top - D.labelPx - D.pad, zone.label)
+  // Зона реальна и тогда, когда в кадр влезла не целиком: её рисуем как есть, а
+  // про обрезку говорим разметкой — шкалу под неё не трогаем, кадр строится по
+  // цене, а не по разметке.
+  const cutTop = rawTop < 0
+  const cutBottom = rawBottom > h
+  const height = bottom - top
+  put('left:' + px(left) + ';top:' + px(top) + ';width:' + px(w - left) + ';height:' + px(height) +
+      ';' + zoneFill(zone, cutTop, cutBottom, height) +
+      ';' + zoneBorder(zone, cutTop, cutBottom, x < 0) + ';box-sizing:border-box')
+  const mark = cutTop && cutBottom ? D.cut.both : cutTop ? D.cut.up : cutBottom ? D.cut.dn : ''
+  const fits = height >= D.minLabelPx
+  // Подпись держится за НАСТОЯЩУЮ границу зоны. У срезанной сверху она одна —
+  // нижняя: подпись у неё читается как уровень, тогда как та же надпись в верхнем
+  // углу кадра читается шапкой картинки и к зоне не относится вовсе.
+  const atBottom = cutTop && !cutBottom
+  const y = atBottom
+    ? (fits ? bottom - D.labelPx - D.pad : bottom + D.pad)
+    : (fits ? top + D.pad : top - D.labelPx - D.pad)
+  label(left + D.pad, y, mark ? mark + ' ' + zone.label : zone.label)
 }
 
 function drawLine(line, w, h) {
@@ -316,6 +378,9 @@ export function chartHtml(input: ChartInput, theme: Theme = SAPPHIRE): string {
     minLabelPx: MIN_LABEL_HEIGHT_PX,
     labelPx: LABEL_FONT_PX,
     pad: LABEL_PAD_PX,
+    cut: CUT_MARK,
+    fadePx: ZONE_FADE_PX,
+    fadeMinPx: ZONE_FADE_MIN_PX,
     lineLabelRoom: LINE_LABEL_ROOM_PX,
     labelGap: LABEL_MIN_GAP_PX,
     visibleBars: input.visibleBars ?? VISIBLE_BARS,
