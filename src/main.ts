@@ -14,12 +14,15 @@ import { refreshWatchlist, type WatchEntry } from './universe.js'
 import { readJson, writeJson, STATE_DIR } from './store/ndjson.js'
 import { scanOnce } from './scan/run.js'
 import { telegramNotifier } from './scan/notify.js'
+import { maybeSendDigest, maybeWriteNote } from './report/schedule.js'
 import { join } from 'node:path'
 
 const WATCHLIST_PATH = join(STATE_DIR, 'watchlist.json')
 const WATCHLIST_TICK_MS = 24 * 3_600_000
 /** Сканер идёт следом за снимком рынка: свежее данных всё равно не будет. */
 const SCAN_TICK_MS = 5 * 60_000
+/** Расписание сводок проверяем раз в минуту — час наступает ровно один раз. */
+const DIGEST_TICK_MS = 60_000
 
 function argNumber(name: string): number | null {
   const index = process.argv.indexOf(name)
@@ -62,6 +65,7 @@ async function main(): Promise<void> {
   const notifier = token === undefined ? null : await telegramNotifier(token)
   if (notifier === null) log('сканер: пинги выключены (нет токена или владельца) — считаю и пишу в журнал')
 
+  let nextDigestCheck = 0
   let nextScan = Date.now() + SCAN_TICK_MS
   let nextMarket = 0
   let nextWhales = 0
@@ -99,6 +103,16 @@ async function main(): Promise<void> {
         nextScan = now + SCAN_TICK_MS
         log(`сканер: ${outcome.shortlisted} кандидатов, прошли порог ${outcome.passed}, отправлено ${outcome.sent}`)
       }
+      if (now >= nextDigestCheck) {
+        nextDigestCheck = now + DIGEST_TICK_MS
+        const slot = await maybeSendDigest(
+          notifier === null ? null : { send: async (text) => { await sendText(token, text) } },
+          now,
+        )
+        if (slot !== null) log(`сводка отправлена: ${slot}`)
+        const note = await maybeWriteNote(now)
+        if (note !== null) log(`заметка за сутки записана: ${note}`)
+      }
       if (now >= nextWatchlist) {
         watch = refreshWatchlist(watch.entries, await fetchAssetCtxs(), now)
         await writeJson(WATCHLIST_PATH, watch.entries)
@@ -116,6 +130,18 @@ async function main(): Promise<void> {
 
   log('смена окончена по расписанию')
   await flow.stop()
+}
+
+/** Текстовое сообщение владельцу. Отдельно от карточек: тут нет картинки. */
+async function sendText(token: string | undefined, text: string): Promise<void> {
+  if (token === undefined) return
+  const state = await readJson<{ ownerId: number | null }>(join(STATE_DIR, 'bot-state.json'), { ownerId: null })
+  if (state.ownerId === null) return
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: state.ownerId, text }),
+  })
 }
 
 void main()

@@ -13,12 +13,18 @@ import { longCaption, shortCaption, type WhaleSummary } from './text/caption.js'
 import { loadBotState, saveBotState, type BotState } from './botState.js'
 import { safeError } from './redact.js'
 import { registerFlow } from './botFlow.js'
+import { buildScorecard, renderScorecard } from './report/scorecard.js'
+import { buildDigest } from './report/digest.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
 type Timeframe = (typeof TIMEFRAMES)[number]
 type Mode = 'short' | 'long'
 
 const DEFAULT_TF: Timeframe = '15m'
+
+/** Двое суток: за сутки дальние горизонты табеля ещё не дозревают. */
+const SCORE_HOURS = 48
+const DIGEST_HOURS = 12
 
 /** В клавиатуре три из пяти: на 5m шум, а 1d за сеанс всё равно не поменяется. */
 const QUICK_TFS: readonly Timeframe[] = ['15m', '1h', '4h']
@@ -73,6 +79,7 @@ const HELLO = [
   'Присылаю карточку разбора: свечи с зонами и уровнями ликвидности картинкой, вывод — текстом.',
   `Пример: /ta SOL 1h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`,
   'Что происходит с потоком прямо сейчас — /flow SOL: лента, дельта, ближний стакан.',
+  'Чего стоили мои пинги — /score. Сводка за окно — /digest.',
 ].join('\n')
 
 const TA_USAGE = `Нужен тикер: /ta SOL или /ta BTC 4h. Таймфреймы: ${TIMEFRAMES.join(', ')}, по умолчанию ${DEFAULT_TF}.`
@@ -84,6 +91,8 @@ export function createBot(token: string): Bot {
   bot.use(ownerGuard())
   bot.command('start', async (ctx) => { await ctx.reply(HELLO) })
   bot.command('ta', onTa)
+  bot.command('score', onScore)
+  bot.command('digest', onDigest)
   bot.callbackQuery(/^ta:/, onCallback)
   registerFlow(bot)
   // Последняя сеть: апдейт теряется, процесс живёт.
@@ -138,6 +147,32 @@ async function onTa(ctx: CommandContext<Context>): Promise<void> {
     return
   }
   await sendCard(ctx, rawCoin.toUpperCase(), tf, 'short')
+}
+
+/** Табель триггеров: чего стоили пинги. Считает по собственному архиву. */
+async function onScore(ctx: CommandContext<Context>): Promise<void> {
+  const hours = Number(ctx.match.trim()) || SCORE_HOURS
+  await ctx.reply('Считаю по архиву, это несколько секунд…')
+  try {
+    const card = await buildScorecard(hours)
+    await ctx.reply(renderScorecard(card))
+  } catch (error) {
+    console.error(`табель: ${safeError(error)}`)
+    await ctx.reply('Не смог собрать табель: ' + (error instanceof Error ? error.message : 'неизвестно'))
+  }
+}
+
+/** Сводка за окно по запросу; по расписанию её же шлёт регистратор. */
+async function onDigest(ctx: CommandContext<Context>): Promise<void> {
+  const hours = Number(ctx.match.trim()) || DIGEST_HOURS
+  await ctx.reply('Собираю сводку…')
+  try {
+    const digest = await buildDigest({ hours, title: `Сводка за ${hours} ч` })
+    await ctx.reply(digest.text)
+  } catch (error) {
+    console.error(`сводка: ${safeError(error)}`)
+    await ctx.reply('Не смог собрать сводку: ' + (error instanceof Error ? error.message : 'неизвестно'))
+  }
 }
 
 /** Пропущенный аргумент — не ошибка, а «как обычно»; чужой — ошибка. */
