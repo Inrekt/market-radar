@@ -15,6 +15,7 @@ import { readJson, writeJson, STATE_DIR } from './store/ndjson.js'
 import { scanOnce } from './scan/run.js'
 import { telegramNotifier } from './scan/notify.js'
 import { maybeSendDigest, maybeWriteNote } from './report/schedule.js'
+import { beatAndPush, PUSH_INTERVAL_MS } from './statePush.js'
 import { join } from 'node:path'
 
 const WATCHLIST_PATH = join(STATE_DIR, 'watchlist.json')
@@ -65,6 +66,7 @@ async function main(): Promise<void> {
   const notifier = token === undefined ? null : await telegramNotifier(token)
   if (notifier === null) log('сканер: пинги выключены (нет токена или владельца) — считаю и пишу в журнал')
 
+  let nextPush = Date.now() + PUSH_INTERVAL_MS
   let nextDigestCheck = 0
   let nextScan = Date.now() + SCAN_TICK_MS
   let nextMarket = 0
@@ -102,6 +104,10 @@ async function main(): Promise<void> {
         const outcome = await scanOnce(notifier, now)
         nextScan = now + SCAN_TICK_MS
         log(`сканер: ${outcome.shortlisted} кандидатов, прошли порог ${outcome.passed}, отправлено ${outcome.sent}`)
+      }
+      if (now >= nextPush) {
+        nextPush = now + PUSH_INTERVAL_MS
+        if (await beatAndPush(now)) log('архив отправлен в ветку state')
       }
       if (now >= nextDigestCheck) {
         nextDigestCheck = now + DIGEST_TICK_MS

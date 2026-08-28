@@ -10,10 +10,15 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { buildDigest } from './digest.js'
 import { buildScorecard, renderScorecard } from './scorecard.js'
-import { utcDay } from '../store/ndjson.js'
+import { utcDay, STATE_DIR } from '../store/ndjson.js'
 
-const VAULT_DIR = process.env.RADAR_VAULT_DIR
-  ?? '/Users/user/Desktop/obsidian vault/obsidian vault/Радар рынка/Журнал рынка'
+/**
+ * Куда класть заметку. По умолчанию — в архив рядом с остальными данными:
+ * на сервере никакого Obsidian нет, а личный путь в публичном репозитории
+ * незачем. На машине владельца путь задаётся переменной RADAR_VAULT_DIR, и
+ * заметка ложится прямо в vault.
+ */
+const VAULT_DIR = process.env.RADAR_VAULT_DIR ?? join(STATE_DIR, 'journal')
 
 /** Сутки назад: заметка за день описывает именно прошедший день. */
 const DAY_HOURS = 24

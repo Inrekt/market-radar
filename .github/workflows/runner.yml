@@ -1,0 +1,88 @@
+# Радар 24/7 на бесплатных минутах Actions: смена живёт ~5ч40м (потолок задания
+# у GitHub — 6 часов) и перед смертью запускает следующую. Старт цепочки —
+# вручную через «Run workflow». Cron ниже — страховка, если цепочка оборвалась.
+name: runner
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+
+concurrency:
+  group: runner
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Кириллица и засечки: подписи на карточках рисуются курсивом с засечками,
+      # без этих шрифтов вместо букв поедут прямоугольники.
+      - name: Шрифты для карточек
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-core fonts-liberation
+
+      - run: npm ci
+      - name: Браузер для снимков
+        run: npx puppeteer browsers install chrome
+
+      # Архив живёт в отдельной ветке: он переживает смены, а история ветки не
+      # растёт — push-state.sh каждый раз переписывает единственный коммит.
+      - name: Подключить ветку архива
+        run: |
+          git fetch origin state || true
+          if git rev-parse --quiet --verify origin/state >/dev/null; then
+            git worktree add state origin/state
+          else
+            git worktree add --orphan -b state state \
+              || { git checkout --orphan state && git rm -rf . \
+                   && git commit --allow-empty -m init && git push origin state \
+                   && git checkout main && git worktree add state origin/state; }
+          fi
+
+      - name: Смена
+        id: shift
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          STATE_GIT: '1'
+        run: |
+          if [ -z "$BOT_TOKEN" ]; then
+            echo "секрет BOT_TOKEN не задан — запускать нечего"
+            exit 0
+          fi
+          started=$(date +%s)
+          # Бот и регистратор живут в одной смене. Регистратор задаёт её длину:
+          # он завершается сам, а бот снимается следом.
+          npx tsx src/run-bot.ts &
+          bot_pid=$!
+          npx tsx src/main.ts --max-runtime-minutes 335 || true
+          kill "$bot_pid" 2>/dev/null || true
+          wait "$bot_pid" 2>/dev/null || true
+          echo "uptime_sec=$(( $(date +%s) - started ))" >> "$GITHUB_OUTPUT"
+
+      # Цепочку продолжаем, ТОЛЬКО если смена реально прожила своё. Мгновенный
+      # выход означает системную поломку — протухший токен, чужой опрос
+      # обновлений — и без этой проверки получим шторм перезапусков раз в минуту.
+      - name: Следующая смена
+        if: always() && steps.shift.outputs.uptime_sec != '' && steps.shift.outputs.uptime_sec > 1800
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run runner.yml -R "$GITHUB_REPOSITORY"
+
+      - name: Смена оборвалась слишком быстро
+        if: always() && steps.shift.outputs.uptime_sec != '' && steps.shift.outputs.uptime_sec <= 1800
+        run: |
+          echo "::error::Смена прожила ${{ steps.shift.outputs.uptime_sec }}с (меньше 30 минут) — цепочка остановлена."
+          echo "Обычно это протухший BOT_TOKEN или второй опрос обновлений (409)."
+          echo "Следующая попытка — по расписанию."
+          exit 1

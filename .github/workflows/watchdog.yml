@@ -1,0 +1,49 @@
+# Сторож. Радар отмечается «жив» в ветке архива каждые 20 минут. Если отметка
+# протухла, смена оборвалась — поднимаем цепочку заново. Без сторожа молчание
+# радара выглядит как спокойный рынок, а не как поломка.
+name: watchdog
+
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Ветки архива может ещё не быть — первая смена её и создаст.
+      - uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: state
+          fetch-depth: 1
+
+      - name: Проверить отметку
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f heartbeat.json ]; then
+            echo "отметки ещё нет — цепочку не трогаем"
+            exit 0
+          fi
+          BEAT=$(jq -r '.heartbeat // ""' heartbeat.json)
+          if [ -z "$BEAT" ]; then
+            echo "отметка пустая — цепочку не трогаем"
+            exit 0
+          fi
+          AGE=$(( $(date +%s) - $(date -d "$BEAT" +%s) ))
+          echo "последняя отметка $BEAT, возраст ${AGE}с"
+          # Порог 45 минут: отметка идёт раз в 20, две пропущенные подряд уже
+          # означают поломку, а не задержку раннера.
+          if [ "$AGE" -gt 2700 ]; then
+            echo "::warning::Радар молчит ${AGE}с — поднимаю цепочку"
+            gh workflow run runner.yml -R "$GITHUB_REPOSITORY"
+          else
+            echo "радар жив"
+          fi
