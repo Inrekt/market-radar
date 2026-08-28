@@ -1,0 +1,2665 @@
+{
+  "t": 1790580808124,
+  "positions": [
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 234222080.38635,
+      "leverage": 5,
+      "entryPx": 75949.4,
+      "liquidationPx": 146093.8124558754,
+      "unrealizedPnl": -19676744.320871
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 276258731.9065,
+      "leverage": 5,
+      "entryPx": 2304.06,
+      "liquidationPx": 4336.0213481294,
+      "unrealizedPnl": -35390538.363482
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 87845710.5467,
+      "leverage": 10,
+      "entryPx": 94.3122,
+      "liquidationPx": 352.2337998909,
+      "unrealizedPnl": -17676114.989986
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "BNB",
+      "isLong": false,
+      "sizeUsd": 830754.776034,
+      "leverage": 3,
+      "entryPx": 779.119,
+      "liquidationPx": 153040.4848073583,
+      "unrealizedPnl": 20609.531706
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 6550231.068692,
+      "leverage": 10,
+      "entryPx": 0.09463,
+      "liquidationPx": 2.4531911484,
+      "unrealizedPnl": 141063.03552
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "INJ",
+      "isLong": false,
+      "sizeUsd": 2015824.94878,
+      "leverage": 3,
+      "entryPx": 5.6137,
+      "liquidationPx": 614.4550141559,
+      "unrealizedPnl": -478061.185245
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "SUI",
+      "isLong": false,
+      "sizeUsd": 4234397.35808,
+      "leverage": 10,
+      "entryPx": 1.11837,
+      "liquidationPx": 47.6260225595,
+      "unrealizedPnl": -212953.496204
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 7076619.47562,
+      "leverage": 3,
+      "entryPx": 13.60843,
+      "liquidationPx": 335.857011696,
+      "unrealizedPnl": -27772.70022
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 25516355.3463,
+      "leverage": 5,
+      "entryPx": 1.484736,
+      "liquidationPx": 11.5432301016,
+      "unrealizedPnl": 219028.656758
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 12270204.138,
+      "leverage": 10,
+      "entryPx": 0.238249,
+      "liquidationPx": 3.834324079,
+      "unrealizedPnl": -1152622.13361
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 59277254.7878,
+      "leverage": 5,
+      "entryPx": 70.1823,
+      "liquidationPx": 338.4682133274,
+      "unrealizedPnl": -12502793.987339
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "FARTCOIN",
+      "isLong": false,
+      "sizeUsd": 3823523.038842,
+      "leverage": 3,
+      "entryPx": 0.20186,
+      "liquidationPx": 7.609704843,
+      "unrealizedPnl": 708868.332206
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 16101538.627174,
+      "leverage": 5,
+      "entryPx": 0.004607,
+      "liquidationPx": 0.0548483516,
+      "unrealizedPnl": -762823.094687
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 8025965.80368,
+      "leverage": 3,
+      "entryPx": 0.106548,
+      "liquidationPx": 2.2124493119,
+      "unrealizedPnl": 369452.625854
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 54525438.386664,
+      "leverage": 3,
+      "entryPx": 1494.3519,
+      "liquidationPx": 6241.1509412738,
+      "unrealizedPnl": -1651560.378455
+    },
+    {
+      "address": "0x5b5d51203a0f9079f8aeb098a6523a13f298c060",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 915088.11165,
+      "leverage": 3,
+      "entryPx": 5.031223,
+      "liquidationPx": 798.2063577031,
+      "unrealizedPnl": 138907.907253
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 145024991.4162,
+      "leverage": 5,
+      "entryPx": 74443.4,
+      "liquidationPx": 159647.1322617722,
+      "unrealizedPnl": -14817496.783562
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 205005712.2002,
+      "leverage": 5,
+      "entryPx": 2338.05,
+      "liquidationPx": 4357.897815863,
+      "unrealizedPnl": -23625839.480962
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 35860510.8522,
+      "leverage": 5,
+      "entryPx": 90.3001,
+      "liquidationPx": 551.9160388423,
+      "unrealizedPnl": -8434312.374089
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 5958954.934252,
+      "leverage": 3,
+      "entryPx": 0.097463,
+      "liquidationPx": 2.0458204016,
+      "unrealizedPnl": 310541.060828
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "SUI",
+      "isLong": false,
+      "sizeUsd": 5250712.79104,
+      "leverage": 3,
+      "entryPx": 1.04809,
+      "liquidationPx": 29.3630096738,
+      "unrealizedPnl": -577448.97824
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 6785900.615055,
+      "leverage": 3,
+      "entryPx": 12.93055,
+      "liquidationPx": 266.54059368,
+      "unrealizedPnl": -363330.641079
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 20571160.7304,
+      "leverage": 5,
+      "entryPx": 1.498503,
+      "liquidationPx": 10.8765873982,
+      "unrealizedPnl": 368967.942061
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 4743503.61675,
+      "leverage": 2,
+      "entryPx": 0.238421,
+      "liquidationPx": 7.2307940431,
+      "unrealizedPnl": -442484.63194
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 63749230.08636,
+      "leverage": 5,
+      "entryPx": 67.4802,
+      "liquidationPx": 263.3449260736,
+      "unrealizedPnl": -15382693.682143
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "FARTCOIN",
+      "isLong": false,
+      "sizeUsd": 3544584.578984,
+      "leverage": 3,
+      "entryPx": 0.17721,
+      "liquidationPx": 6.2116752835,
+      "unrealizedPnl": 144190.07367
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 2999781.92822,
+      "leverage": 5,
+      "entryPx": 0.003204,
+      "liquidationPx": 0.2076447982,
+      "unrealizedPnl": -1012379.53303
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 4727776.48816,
+      "leverage": 5,
+      "entryPx": 0.111292,
+      "liquidationPx": 2.795059688,
+      "unrealizedPnl": 437814.400916
+    },
+    {
+      "address": "0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 40976261.882567,
+      "leverage": 3,
+      "entryPx": 1334.6325,
+      "liquidationPx": 6242.1389354317,
+      "unrealizedPnl": -5488128.600046
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 6558371.69995,
+      "leverage": 20,
+      "entryPx": 84134.1,
+      "liquidationPx": 538737.7552635007,
+      "unrealizedPnl": 96428.987358
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 10428274.89402,
+      "leverage": 20,
+      "entryPx": 2712.63,
+      "liquidationPx": 11711.8786105771,
+      "unrealizedPnl": 276372.801179
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 5960968.2111,
+      "leverage": 20,
+      "entryPx": 121.6256,
+      "liquidationPx": 823.498250057,
+      "unrealizedPnl": 179515.093098
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 13204429.3311,
+      "leverage": 20,
+      "entryPx": 1.487952,
+      "liquidationPx": 5.4192136801,
+      "unrealizedPnl": 142192.704677
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 8091691.45414,
+      "leverage": 5,
+      "entryPx": 92.8562,
+      "liquidationPx": 459.6698746382,
+      "unrealizedPnl": 356106.577047
+    },
+    {
+      "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+      "coin": "PAXG",
+      "isLong": true,
+      "sizeUsd": 701311.2743,
+      "leverage": 5,
+      "entryPx": 4091.681,
+      "liquidationPx": null,
+      "unrealizedPnl": 11997.937807
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 15508956.40175,
+      "leverage": 20,
+      "entryPx": 83600.3,
+      "liquidationPx": null,
+      "unrealizedPnl": -128187.175553
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 40206378.64022,
+      "leverage": 15,
+      "entryPx": 2688.85,
+      "liquidationPx": 5883.186728558,
+      "unrealizedPnl": 703765.468321
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 9716194.0067,
+      "leverage": 20,
+      "entryPx": 119.9507,
+      "liquidationPx": 714.2904505109,
+      "unrealizedPnl": 154769.026194
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "BNB",
+      "isLong": false,
+      "sizeUsd": 1557644.488006,
+      "leverage": 5,
+      "entryPx": 774.462,
+      "liquidationPx": 23106.7960183251,
+      "unrealizedPnl": 29101.293669
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "LTC",
+      "isLong": false,
+      "sizeUsd": 1197700.3476,
+      "leverage": 10,
+      "entryPx": 71.1925,
+      "liquidationPx": 2796.3874097662,
+      "unrealizedPnl": 18493.477614
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ARB",
+      "isLong": false,
+      "sizeUsd": 425071.39252,
+      "leverage": 10,
+      "entryPx": 0.22106,
+      "liquidationPx": 22.4605185207,
+      "unrealizedPnl": 30244.244008
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 7150462.047344,
+      "leverage": 10,
+      "entryPx": 0.095872,
+      "liquidationPx": 0.6925008861,
+      "unrealizedPnl": 249826.98728
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "SUI",
+      "isLong": false,
+      "sizeUsd": 2765910.60992,
+      "leverage": 10,
+      "entryPx": 1.17975,
+      "liquidationPx": 20.9761186926,
+      "unrealizedPnl": 5067.189463
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "kPEPE",
+      "isLong": false,
+      "sizeUsd": 1265552.589396,
+      "leverage": 10,
+      "entryPx": 0.004544,
+      "liquidationPx": 0.1559941227,
+      "unrealizedPnl": 128135.845775
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "CRV",
+      "isLong": false,
+      "sizeUsd": 409217.167034,
+      "leverage": 10,
+      "entryPx": 0.34499,
+      "liquidationPx": 37.3868641362,
+      "unrealizedPnl": 24655.754377
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "LDO",
+      "isLong": false,
+      "sizeUsd": 517586.565262,
+      "leverage": 5,
+      "entryPx": 0.4395,
+      "liquidationPx": 41.3654735761,
+      "unrealizedPnl": -26326.342489
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 1000156.328145,
+      "leverage": 10,
+      "entryPx": 13.50646,
+      "liquidationPx": 649.9738248332,
+      "unrealizedPnl": -11389.612681
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 5779239.3687,
+      "leverage": 10,
+      "entryPx": 1.532121,
+      "liquidationPx": 13.8797786846,
+      "unrealizedPnl": 235633.594556
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "APT",
+      "isLong": false,
+      "sizeUsd": 709564.922604,
+      "leverage": 10,
+      "entryPx": 0.8283,
+      "liquidationPx": 54.4409873319,
+      "unrealizedPnl": 10204.785946
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "AAVE",
+      "isLong": false,
+      "sizeUsd": 724497.4466,
+      "leverage": 10,
+      "entryPx": 144.1545,
+      "liquidationPx": 9625.2455900302,
+      "unrealizedPnl": -15807.72029
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "WLD",
+      "isLong": false,
+      "sizeUsd": 842463.037874,
+      "leverage": 10,
+      "entryPx": 0.47334,
+      "liquidationPx": 28.9086356326,
+      "unrealizedPnl": -65822.191599
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "TRX",
+      "isLong": true,
+      "sizeUsd": 1217594.98188,
+      "leverage": 10,
+      "entryPx": 0.335842,
+      "liquidationPx": null,
+      "unrealizedPnl": -9728.628953
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "UNI",
+      "isLong": false,
+      "sizeUsd": 326823.03376,
+      "leverage": 10,
+      "entryPx": 9.5753,
+      "liquidationPx": 1297.5624750971,
+      "unrealizedPnl": 19567.583879
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "SEI",
+      "isLong": false,
+      "sizeUsd": 420387.402421,
+      "leverage": 5,
+      "entryPx": 0.061649,
+      "liquidationPx": 8.8721786462,
+      "unrealizedPnl": -99783.078797
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ZRO",
+      "isLong": true,
+      "sizeUsd": 1320051.2941,
+      "leverage": 5,
+      "entryPx": 1.223,
+      "liquidationPx": null,
+      "unrealizedPnl": 216543.674172
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "TIA",
+      "isLong": false,
+      "sizeUsd": 917923.43602,
+      "leverage": 5,
+      "entryPx": 0.42632,
+      "liquidationPx": 23.4991380676,
+      "unrealizedPnl": -71831.074507
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ADA",
+      "isLong": false,
+      "sizeUsd": 642760.19535,
+      "leverage": 10,
+      "entryPx": 0.252501,
+      "liquidationPx": 17.8342251851,
+      "unrealizedPnl": 26095.911066
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "kBONK",
+      "isLong": false,
+      "sizeUsd": 433596.89214,
+      "leverage": 10,
+      "entryPx": 0.003559,
+      "liquidationPx": 0.3731037345,
+      "unrealizedPnl": 15232.17424
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "JUP",
+      "isLong": false,
+      "sizeUsd": 313438.59015,
+      "leverage": 5,
+      "entryPx": 0.334506,
+      "liquidationPx": 49.7548477894,
+      "unrealizedPnl": -3138.337449
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 443747.80122,
+      "leverage": 10,
+      "entryPx": 0.540344,
+      "liquidationPx": 56.9770833211,
+      "unrealizedPnl": -4861.790647
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "TAO",
+      "isLong": false,
+      "sizeUsd": 784657.45046,
+      "leverage": 5,
+      "entryPx": 313.819,
+      "liquidationPx": 17887.6380416454,
+      "unrealizedPnl": 31196.800812
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 3063113.4903,
+      "leverage": 5,
+      "entryPx": 0.241752,
+      "liquidationPx": 4.2537222554,
+      "unrealizedPnl": -246934.050618
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "POPCAT",
+      "isLong": false,
+      "sizeUsd": 369995.137929,
+      "leverage": 3,
+      "entryPx": 0.052755,
+      "liquidationPx": 6.1792351179,
+      "unrealizedPnl": 1184.705055
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "EIGEN",
+      "isLong": false,
+      "sizeUsd": 440708.180939,
+      "leverage": 5,
+      "entryPx": 0.228,
+      "liquidationPx": 26.7190099105,
+      "unrealizedPnl": -46793.246215
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "GRASS",
+      "isLong": false,
+      "sizeUsd": 443831.594115,
+      "leverage": 3,
+      "entryPx": 0.37685,
+      "liquidationPx": 59.3791680796,
+      "unrealizedPnl": -167437.093923
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "XLM",
+      "isLong": false,
+      "sizeUsd": 486517.75412,
+      "leverage": 5,
+      "entryPx": 0.214994,
+      "liquidationPx": 19.7198737584,
+      "unrealizedPnl": 17233.102138
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 9843573.13394,
+      "leverage": 3,
+      "entryPx": 92.081,
+      "liquidationPx": 506.2072092569,
+      "unrealizedPnl": 347413.0016
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "VIRTUAL",
+      "isLong": false,
+      "sizeUsd": 1142880.660288,
+      "leverage": 5,
+      "entryPx": 0.75202,
+      "liquidationPx": 32.3867181515,
+      "unrealizedPnl": -54740.533096
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "PENGU",
+      "isLong": false,
+      "sizeUsd": 438837.99923,
+      "leverage": 5,
+      "entryPx": 0.009801,
+      "liquidationPx": 1.0039570302,
+      "unrealizedPnl": 11779.556716
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "SPX",
+      "isLong": false,
+      "sizeUsd": 368604.327188,
+      "leverage": 5,
+      "entryPx": 0.47599,
+      "liquidationPx": 52.6810415211,
+      "unrealizedPnl": 47812.187987
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "MORPHO",
+      "isLong": false,
+      "sizeUsd": 409764.54046,
+      "leverage": 5,
+      "entryPx": 2.70082,
+      "liquidationPx": 284.4389645657,
+      "unrealizedPnl": 28238.863666
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "VVV",
+      "isLong": false,
+      "sizeUsd": 1182438.65151,
+      "leverage": 3,
+      "entryPx": 30.5584,
+      "liquidationPx": 1042.6461415904,
+      "unrealizedPnl": 115600.832212
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "PAXG",
+      "isLong": false,
+      "sizeUsd": 478125.7166,
+      "leverage": 5,
+      "entryPx": 4247.874,
+      "liquidationPx": 403220.9551001033,
+      "unrealizedPnl": 9759.716688
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 5071110.359833,
+      "leverage": 3,
+      "entryPx": 0.004443,
+      "liquidationPx": 0.0490924112,
+      "unrealizedPnl": -412148.768656
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 649552.66376,
+      "leverage": 5,
+      "entryPx": 0.108338,
+      "liquidationPx": 7.2880330226,
+      "unrealizedPnl": 41310.548613
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ASTER",
+      "isLong": false,
+      "sizeUsd": 1835253.552,
+      "leverage": 3,
+      "entryPx": 0.738503,
+      "liquidationPx": 18.2209148243,
+      "unrealizedPnl": 92136.113354
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 350152.677546,
+      "leverage": 5,
+      "entryPx": 1578.1175,
+      "liquidationPx": 206681.2374221499,
+      "unrealizedPnl": 8427.184108
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "MON",
+      "isLong": false,
+      "sizeUsd": 1570397.886325,
+      "leverage": 3,
+      "entryPx": 0.028045,
+      "liquidationPx": 0.8327713089,
+      "unrealizedPnl": 22200.846092
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "MET",
+      "isLong": false,
+      "sizeUsd": 332613.65406,
+      "leverage": 3,
+      "entryPx": 0.344924,
+      "liquidationPx": 43.3404687629,
+      "unrealizedPnl": 13094.221002
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 301415.45445,
+      "leverage": 3,
+      "entryPx": 4.78414,
+      "liquidationPx": 666.9304039777,
+      "unrealizedPnl": 28704.599142
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "GRAM",
+      "isLong": false,
+      "sizeUsd": 419547.3268,
+      "leverage": 5,
+      "entryPx": 1.619456,
+      "liquidationPx": 177.208388851,
+      "unrealizedPnl": 2097.711663
+    },
+    {
+      "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+      "coin": "CASHCAT",
+      "isLong": false,
+      "sizeUsd": 1506063.90004,
+      "leverage": 1,
+      "entryPx": 0.178733,
+      "liquidationPx": 0.3070055909,
+      "unrealizedPnl": -52353.687195
+    },
+    {
+      "address": "0x856c35038594767646266bc7fd68dc26480e910d",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 388373.03085,
+      "leverage": 20,
+      "entryPx": 62946.4,
+      "liquidationPx": 1075198.0153375096,
+      "unrealizedPnl": -93532.71768
+    },
+    {
+      "address": "0x856c35038594767646266bc7fd68dc26480e910d",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 2815567.7737,
+      "leverage": 5,
+      "entryPx": 0.093251,
+      "liquidationPx": 0.2569349845,
+      "unrealizedPnl": -237958.541042
+    },
+    {
+      "address": "0xf5d81a135f756ca16544e53c20fc20643ec3ad53",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 634088.31675,
+      "leverage": 3,
+      "entryPx": 82916.1,
+      "liquidationPx": null,
+      "unrealizedPnl": -8.718877
+    },
+    {
+      "address": "0xf5d81a135f756ca16544e53c20fc20643ec3ad53",
+      "coin": "ETH",
+      "isLong": true,
+      "sizeUsd": 315721.19962,
+      "leverage": 3,
+      "entryPx": 2645.16,
+      "liquidationPx": null,
+      "unrealizedPnl": -306.677457
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 36068025,
+      "leverage": 20,
+      "entryPx": 76982.7,
+      "liquidationPx": 168019.7807111088,
+      "unrealizedPnl": -2580527.817079
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 36864270,
+      "leverage": 20,
+      "entryPx": 2443.6,
+      "liquidationPx": 5276.8917179316,
+      "unrealizedPnl": -2775987.535467
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 3450005.4,
+      "leverage": 20,
+      "entryPx": 93.2845,
+      "liquidationPx": 1369.5795525767,
+      "unrealizedPnl": -724229.42051
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 4208082.936,
+      "leverage": 10,
+      "entryPx": 0.095443,
+      "liquidationPx": 0.8585756643,
+      "unrealizedPnl": 127546.284319
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "kPEPE",
+      "isLong": false,
+      "sizeUsd": 529906.8,
+      "leverage": 10,
+      "entryPx": 0.0038,
+      "liquidationPx": 0.2764071013,
+      "unrealizedPnl": -41862.658107
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 2670930.775,
+      "leverage": 10,
+      "entryPx": 11.54211,
+      "liquidationPx": 191.9916957368,
+      "unrealizedPnl": -414447.3453
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 3611061.3,
+      "leverage": 20,
+      "entryPx": 1.483196,
+      "liquidationPx": 16.3782636177,
+      "unrealizedPnl": 27219.1241
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "AAVE",
+      "isLong": false,
+      "sizeUsd": 2316803.77,
+      "leverage": 10,
+      "entryPx": 118.4015,
+      "liquidationPx": 2366.0292725393,
+      "unrealizedPnl": -455412.5886
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "UNI",
+      "isLong": false,
+      "sizeUsd": 1183506.4,
+      "leverage": 10,
+      "entryPx": 8.05042,
+      "liquidationPx": 275.6836819878,
+      "unrealizedPnl": -128900.51493
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "ZRO",
+      "isLong": false,
+      "sizeUsd": 835958.2,
+      "leverage": 5,
+      "entryPx": 1.30729,
+      "liquidationPx": 61.0985631375,
+      "unrealizedPnl": -88972.392102
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 4668586.78,
+      "leverage": 10,
+      "entryPx": 3.26165,
+      "liquidationPx": 43.3706069671,
+      "unrealizedPnl": -1702436.88422
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 986125.65,
+      "leverage": 10,
+      "entryPx": 0.44836,
+      "liquidationPx": 19.4755823656,
+      "unrealizedPnl": -176835.271403
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "TAO",
+      "isLong": false,
+      "sizeUsd": 570439.8,
+      "leverage": 5,
+      "entryPx": 321.714,
+      "liquidationPx": 18331.323056493,
+      "unrealizedPnl": 37601.39139
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 1687087.2,
+      "leverage": 10,
+      "entryPx": 0.551799,
+      "liquidationPx": 5.7037489252,
+      "unrealizedPnl": 1853255.499242
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 38519001.36,
+      "leverage": 10,
+      "entryPx": 28.7925,
+      "liquidationPx": 167.6243699473,
+      "unrealizedPnl": -26049526.671727
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "FARTCOIN",
+      "isLong": false,
+      "sizeUsd": 1250218.093,
+      "leverage": 7,
+      "entryPx": 0.63634,
+      "liquidationPx": 4.9277744506,
+      "unrealizedPnl": 3421665.015195
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "VVV",
+      "isLong": false,
+      "sizeUsd": 439824.6,
+      "leverage": 3,
+      "entryPx": 14.7728,
+      "liquidationPx": 2061.2910789032,
+      "unrealizedPnl": -206413.672571
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 6180766.97,
+      "leverage": 3,
+      "entryPx": 0.004715,
+      "liquidationPx": 0.0319958951,
+      "unrealizedPnl": -155155.496966
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 8054960.1511,
+      "leverage": 5,
+      "entryPx": 833.4375,
+      "liquidationPx": 8164.0859545896,
+      "unrealizedPnl": -3698582.178
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "MON",
+      "isLong": false,
+      "sizeUsd": 608410,
+      "leverage": 5,
+      "entryPx": 0.029409,
+      "liquidationPx": 1.5765532171,
+      "unrealizedPnl": 38596.348504
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 1135719,
+      "leverage": 3,
+      "entryPx": 1.888811,
+      "liquidationPx": 135.4287683722,
+      "unrealizedPnl": -644628.0399
+    },
+    {
+      "address": "0x45d26f28196d226497130c4bac709d808fed4029",
+      "coin": "CASHCAT",
+      "isLong": false,
+      "sizeUsd": 1037047.73289,
+      "leverage": 3,
+      "entryPx": 0.116438,
+      "liquidationPx": 0.7031501981,
+      "unrealizedPnl": -384929.903344
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 36933840.013,
+      "leverage": 30,
+      "entryPx": 84474.4,
+      "liquidationPx": 179379.2904188409,
+      "unrealizedPnl": 694656.757191
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 64894140.5754,
+      "leverage": 25,
+      "entryPx": 2598.11,
+      "liquidationPx": 4375.5499439953,
+      "unrealizedPnl": -1092359.655707
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "SOL",
+      "isLong": true,
+      "sizeUsd": 7644599.1831,
+      "leverage": 20,
+      "entryPx": 119.0652,
+      "liquidationPx": null,
+      "unrealizedPnl": -64440.012625
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "AVAX",
+      "isLong": false,
+      "sizeUsd": 647602.263,
+      "leverage": 10,
+      "entryPx": 13.2086,
+      "liquidationPx": 659.3725248715,
+      "unrealizedPnl": 175287.63506
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "BNB",
+      "isLong": false,
+      "sizeUsd": 1140460.724605,
+      "leverage": 10,
+      "entryPx": 758.429,
+      "liquidationPx": 27182.439250522,
+      "unrealizedPnl": -2744.236321
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "LTC",
+      "isLong": false,
+      "sizeUsd": 626862.6243,
+      "leverage": 10,
+      "entryPx": 56.9012,
+      "liquidationPx": 4592.1170755967,
+      "unrealizedPnl": -118100.7495
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 1562526.335772,
+      "leverage": 10,
+      "entryPx": 0.092646,
+      "liquidationPx": 2.4871590462,
+      "unrealizedPnl": 177.140224
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "kPEPE",
+      "isLong": false,
+      "sizeUsd": 1025604.661761,
+      "leverage": 10,
+      "entryPx": 0.003908,
+      "liquidationPx": 0.1667505368,
+      "unrealizedPnl": -54309.590231
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 7187367.7911,
+      "leverage": 20,
+      "entryPx": 1.532348,
+      "liquidationPx": 10.1186631818,
+      "unrealizedPnl": 294155.856483
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "WLD",
+      "isLong": false,
+      "sizeUsd": 4331943.256702,
+      "leverage": 10,
+      "entryPx": 0.40368,
+      "liquidationPx": 5.2858369371,
+      "unrealizedPnl": -926163.244337
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ZRO",
+      "isLong": false,
+      "sizeUsd": 1230299.0238,
+      "leverage": 5,
+      "entryPx": 1.1688,
+      "liquidationPx": 48.4950518551,
+      "unrealizedPnl": -247404.765209
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 2805477.72362,
+      "leverage": 10,
+      "entryPx": 1.985,
+      "liquidationPx": 78.9381087127,
+      "unrealizedPnl": -1720709.330536
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 3044143.11138,
+      "leverage": 10,
+      "entryPx": 0.54532,
+      "liquidationPx": 7.644563192,
+      "unrealizedPnl": -5623.48006
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 1167622.90125,
+      "leverage": 10,
+      "entryPx": 0.15785,
+      "liquidationPx": 9.3627136765,
+      "unrealizedPnl": -466689.636641
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 1414505.99598,
+      "leverage": 10,
+      "entryPx": 91.745,
+      "liquidationPx": 2628.9846663491,
+      "unrealizedPnl": 44579.130454
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 4198214.785499,
+      "leverage": 10,
+      "entryPx": 0.004609,
+      "liquidationPx": 0.0512337836,
+      "unrealizedPnl": -197164.328143
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 750073.51034,
+      "leverage": 5,
+      "entryPx": 0.095349,
+      "liquidationPx": 5.4868096577,
+      "unrealizedPnl": -47938.616953
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ASTER",
+      "isLong": false,
+      "sizeUsd": 627703.7448,
+      "leverage": 5,
+      "entryPx": 0.77843,
+      "liquidationPx": 45.0114320741,
+      "unrealizedPnl": 67153.41804
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 15235571.097966,
+      "leverage": 5,
+      "entryPx": 1557.414,
+      "liquidationPx": 5563.4172263572,
+      "unrealizedPnl": 161990.237286
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 10085206.56075,
+      "leverage": 5,
+      "entryPx": 3.755438,
+      "liquidationPx": 21.4987677743,
+      "unrealizedPnl": -1414630.997092
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "XMR",
+      "isLong": false,
+      "sizeUsd": 982725.67377,
+      "leverage": 5,
+      "entryPx": 550.744,
+      "liquidationPx": 21890.7480003819,
+      "unrealizedPnl": 37060.308271
+    },
+    {
+      "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+      "coin": "GRAM",
+      "isLong": false,
+      "sizeUsd": 1673144.0138,
+      "leverage": 5,
+      "entryPx": 1.426122,
+      "liquidationPx": 39.703096438,
+      "unrealizedPnl": -192376.5678
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 2085743.408,
+      "leverage": 15,
+      "entryPx": 79550.5,
+      "liquidationPx": 893130.889435265,
+      "unrealizedPnl": -84632.84904
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 2113450.09575,
+      "leverage": 15,
+      "entryPx": 2494.83,
+      "liquidationPx": 27938.1817870141,
+      "unrealizedPnl": -118104.0685
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 2406949.8048,
+      "leverage": 10,
+      "entryPx": 102.9403,
+      "liquidationPx": 1105.7435086768,
+      "unrealizedPnl": -308607.9135
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "AVAX",
+      "isLong": false,
+      "sizeUsd": 1784136.25594,
+      "leverage": 10,
+      "entryPx": 7.4346,
+      "liquidationPx": 124.5689060123,
+      "unrealizedPnl": -508591.237101
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "BNB",
+      "isLong": false,
+      "sizeUsd": 2011717.892065,
+      "leverage": 10,
+      "entryPx": 752.734,
+      "liquidationPx": 7866.6466948841,
+      "unrealizedPnl": -19847.308455
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 2081187.3384,
+      "leverage": 10,
+      "entryPx": 1.414161,
+      "liquidationPx": 15.7158216463,
+      "unrealizedPnl": -82318.6901
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "ADA",
+      "isLong": false,
+      "sizeUsd": 2206498.7982,
+      "leverage": 10,
+      "entryPx": 0.218995,
+      "liquidationPx": 2.395126351,
+      "unrealizedPnl": -215508.99935
+    },
+    {
+      "address": "0x77375a8c9d13bf79afb2a87f1b0ac1dfd5f5bf66",
+      "coin": "NEAR",
+      "isLong": true,
+      "sizeUsd": 29984316.75861,
+      "leverage": 10,
+      "entryPx": 2.35301,
+      "liquidationPx": 1.3250555938,
+      "unrealizedPnl": 16245369.65024
+    },
+    {
+      "address": "0x8def9f50456c6c4e37fa5d3d57f108ed23992dae",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 9310788.93177,
+      "leverage": 3,
+      "entryPx": 64.7005,
+      "liquidationPx": 121.7676179549,
+      "unrealizedPnl": -2536694.335542
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 17254477.1777,
+      "leverage": 3,
+      "entryPx": 77305.5,
+      "liquidationPx": 283915.1680117671,
+      "unrealizedPnl": -1167322.783614
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 4503944.3715,
+      "leverage": 3,
+      "entryPx": 11.87771,
+      "liquidationPx": 132.6131442679,
+      "unrealizedPnl": -589082.801367
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 2790954.8136,
+      "leverage": 3,
+      "entryPx": 1.515092,
+      "liquidationPx": 23.2184217422,
+      "unrealizedPnl": 80923.762112
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "ZRO",
+      "isLong": false,
+      "sizeUsd": 8189772.7604,
+      "leverage": 3,
+      "entryPx": 1.09488,
+      "liquidationPx": 8.3406479402,
+      "unrealizedPnl": -2060706.515918
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 22146076.25305,
+      "leverage": 3,
+      "entryPx": 2.31039,
+      "liquidationPx": 14.0629364232,
+      "unrealizedPnl": -12182474.911762
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 24198114.474,
+      "leverage": 3,
+      "entryPx": 73.5786,
+      "liquidationPx": 230.4201734256,
+      "unrealizedPnl": -4176916.405037
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "FARTCOIN",
+      "isLong": false,
+      "sizeUsd": 388283.559077,
+      "leverage": 3,
+      "entryPx": 0.15952,
+      "liquidationPx": 17.4465051428,
+      "unrealizedPnl": -24547.970464
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "VVV",
+      "isLong": false,
+      "sizeUsd": 3263320.331271,
+      "leverage": 3,
+      "entryPx": 24.8681,
+      "liquidationPx": 337.4578309924,
+      "unrealizedPnl": -347756.407638
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 3768185.13148,
+      "leverage": 3,
+      "entryPx": 0.004437,
+      "liquidationPx": 0.0552392992,
+      "unrealizedPnl": -313300.45375
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 3251532.39408,
+      "leverage": 3,
+      "entryPx": 0.101559,
+      "liquidationPx": 1.3082160813,
+      "unrealizedPnl": -10234.301759
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 14502293.265,
+      "leverage": 3,
+      "entryPx": 683.0611,
+      "liquidationPx": 5660.4268388867,
+      "unrealizedPnl": -8076114.990391
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 3447374.112,
+      "leverage": 3,
+      "entryPx": 4.530028,
+      "liquidationPx": 53.1502334519,
+      "unrealizedPnl": 127878.057058
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "CASHCAT",
+      "isLong": false,
+      "sizeUsd": 6910856.52945,
+      "leverage": 3,
+      "entryPx": 0.208981,
+      "liquidationPx": 1.1579350213,
+      "unrealizedPnl": 887829.205888
+    },
+    {
+      "address": "0xdd53c5297309130ab5fe5623dc905752e3342b13",
+      "coin": "PONS",
+      "isLong": false,
+      "sizeUsd": 5251084.97628,
+      "leverage": 3,
+      "entryPx": 0.624716,
+      "liquidationPx": 4.0726444788,
+      "unrealizedPnl": 1122663.345075
+    },
+    {
+      "address": "0x0b8aa35c28b7c6ab18f11dc168f437a8a69fd4f8",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 8893344.645,
+      "leverage": 10,
+      "entryPx": 32.4618,
+      "liquidationPx": 132.1634249718,
+      "unrealizedPnl": -5647000.54541
+    },
+    {
+      "address": "0xa9b95f2a2e7ef219021efc5c04c32761b8553bbd",
+      "coin": "HYPE",
+      "isLong": true,
+      "sizeUsd": 22187785.5,
+      "leverage": 10,
+      "entryPx": 39.6337,
+      "liquidationPx": 47.2912222824,
+      "unrealizedPnl": 12299175.916734
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 16189676.1145,
+      "leverage": 20,
+      "entryPx": 85156.2,
+      "liquidationPx": 246844.5975377004,
+      "unrealizedPnl": 437627.435598
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 11420929.12975,
+      "leverage": 20,
+      "entryPx": 2587.64,
+      "liquidationPx": 9993.9134331352,
+      "unrealizedPnl": -237095.041285
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 2908303.3152,
+      "leverage": 20,
+      "entryPx": 103.1937,
+      "liquidationPx": 1401.7998026565,
+      "unrealizedPnl": -366648.197864
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 587982.3264,
+      "leverage": 20,
+      "entryPx": 1.420735,
+      "liquidationPx": 80.6486869269,
+      "unrealizedPnl": -20631.633371
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "WLD",
+      "isLong": false,
+      "sizeUsd": 3800224.83461,
+      "leverage": 3,
+      "entryPx": 0.5128,
+      "liquidationPx": 4.5953750952,
+      "unrealizedPnl": -6224.321624
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 12881679.2321,
+      "leverage": 3,
+      "entryPx": 5.04531,
+      "liquidationPx": 17.0094254077,
+      "unrealizedPnl": -225724.579503
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 6213591.93357,
+      "leverage": 3,
+      "entryPx": 0.531098,
+      "liquidationPx": 3.137939536,
+      "unrealizedPnl": -175445.369339
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "TAO",
+      "isLong": false,
+      "sizeUsd": 2253368.59956,
+      "leverage": 3,
+      "entryPx": 322.27,
+      "liquidationPx": 4248.5962473702,
+      "unrealizedPnl": 152363.559887
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 6011833.60306,
+      "leverage": 3,
+      "entryPx": 0.247641,
+      "liquidationPx": 1.5793383408,
+      "unrealizedPnl": -349774.902974
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "GRASS",
+      "isLong": false,
+      "sizeUsd": 1282598.07104,
+      "leverage": 2,
+      "entryPx": 0.49289,
+      "liquidationPx": 13.7031576736,
+      "unrealizedPnl": -237275.88752
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "HYPE",
+      "isLong": true,
+      "sizeUsd": 324778.49019,
+      "leverage": 3,
+      "entryPx": 90.7708,
+      "liquidationPx": null,
+      "unrealizedPnl": -6726.775688
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "FARTCOIN",
+      "isLong": true,
+      "sizeUsd": 304649.780653,
+      "leverage": 3,
+      "entryPx": 0.17751,
+      "liquidationPx": null,
+      "unrealizedPnl": -12926.209951
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "VVV",
+      "isLong": false,
+      "sizeUsd": 1641924.202932,
+      "leverage": 2,
+      "entryPx": 31.0099,
+      "liquidationPx": 498.7442527664,
+      "unrealizedPnl": 187326.272543
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "XPL",
+      "isLong": true,
+      "sizeUsd": 582847.43148,
+      "leverage": 3,
+      "entryPx": 0.104913,
+      "liquidationPx": null,
+      "unrealizedPnl": -17356.711646
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 1110373.28,
+      "leverage": 3,
+      "entryPx": 1593.1539,
+      "liquidationPx": 43635.0033863068,
+      "unrealizedPnl": 37207.392934
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "CC",
+      "isLong": false,
+      "sizeUsd": 344483.65056,
+      "leverage": 3,
+      "entryPx": 0.137603,
+      "liquidationPx": 11.3265155689,
+      "unrealizedPnl": -2822.874774
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "XMR",
+      "isLong": false,
+      "sizeUsd": 497619.87822,
+      "leverage": 3,
+      "entryPx": 581.085,
+      "liquidationPx": 31953.2268514345,
+      "unrealizedPnl": 47213.720541
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "GRAM",
+      "isLong": false,
+      "sizeUsd": 2089649.0174,
+      "leverage": 3,
+      "entryPx": 1.610385,
+      "liquidationPx": 24.3306916691,
+      "unrealizedPnl": -1315.116821
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "CASHCAT",
+      "isLong": false,
+      "sizeUsd": 1578243.99624,
+      "leverage": 1,
+      "entryPx": 0.189445,
+      "liquidationPx": 3.4447130466,
+      "unrealizedPnl": 36270.243306
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "PONS",
+      "isLong": false,
+      "sizeUsd": 5485248.93588,
+      "leverage": 2,
+      "entryPx": 0.627097,
+      "liquidationPx": 3.1211433389,
+      "unrealizedPnl": 1198099.15718
+    },
+    {
+      "address": "0x936cf4fb95c30ce83f658b5bbb247e4bb381bb0f",
+      "coin": "USELESS",
+      "isLong": false,
+      "sizeUsd": 640186.50096,
+      "leverage": 3,
+      "entryPx": 0.290972,
+      "liquidationPx": 11.2470176434,
+      "unrealizedPnl": 95039.52273
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 3833892.58945,
+      "leverage": 40,
+      "entryPx": 70673.1,
+      "liquidationPx": null,
+      "unrealizedPnl": 566046.995009
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "kPEPE",
+      "isLong": false,
+      "sizeUsd": 398255.5,
+      "leverage": 10,
+      "entryPx": 0.007044,
+      "liquidationPx": 0.1948684317,
+      "unrealizedPnl": 281555.249137
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 1348205.298,
+      "leverage": 10,
+      "entryPx": 14.08033,
+      "liquidationPx": 200.2281895818,
+      "unrealizedPnl": 40977.242045
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 1024790.4,
+      "leverage": 20,
+      "entryPx": 1.493915,
+      "liquidationPx": 28.5636189066,
+      "unrealizedPnl": 14974.6156
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "AAVE",
+      "isLong": false,
+      "sizeUsd": 1345995.06875,
+      "leverage": 10,
+      "entryPx": 131.4882,
+      "liquidationPx": 2162.5885565863,
+      "unrealizedPnl": -145014.32215
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "UNI",
+      "isLong": false,
+      "sizeUsd": 745295.53832,
+      "leverage": 10,
+      "entryPx": 9.1886,
+      "liquidationPx": 232.156785881,
+      "unrealizedPnl": 12720.77529
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "PENDLE",
+      "isLong": false,
+      "sizeUsd": 378828.966336,
+      "leverage": 5,
+      "entryPx": 5.502951,
+      "liquidationPx": 120.9011386831,
+      "unrealizedPnl": 476208.555564
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 1571831.11108,
+      "leverage": 10,
+      "entryPx": 3.29351,
+      "liquidationPx": 65.2709889424,
+      "unrealizedPnl": -563738.97279
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 4244413.98348,
+      "leverage": 3,
+      "entryPx": 85.368,
+      "liquidationPx": 472.0584817546,
+      "unrealizedPnl": -169958.67449
+    },
+    {
+      "address": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 451875.31,
+      "leverage": 5,
+      "entryPx": 1471.0018,
+      "liquidationPx": 64332.480964626,
+      "unrealizedPnl": -20665.842
+    },
+    {
+      "address": "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+      "coin": "LDO",
+      "isLong": true,
+      "sizeUsd": 814749.809848,
+      "leverage": 1,
+      "entryPx": 0.99916,
+      "liquidationPx": null,
+      "unrealizedPnl": -943272.952978
+    },
+    {
+      "address": "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+      "coin": "ONDO",
+      "isLong": true,
+      "sizeUsd": 953968.115,
+      "leverage": 1,
+      "entryPx": 0.992029,
+      "liquidationPx": null,
+      "unrealizedPnl": -777620.125749
+    },
+    {
+      "address": "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+      "coin": "ENA",
+      "isLong": true,
+      "sizeUsd": 1428285.08414,
+      "leverage": 1,
+      "entryPx": 0.57887,
+      "liquidationPx": null,
+      "unrealizedPnl": -1716128.09736
+    },
+    {
+      "address": "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+      "coin": "WLFI",
+      "isLong": true,
+      "sizeUsd": 335238.133575,
+      "leverage": 1,
+      "entryPx": 0.195226,
+      "liquidationPx": null,
+      "unrealizedPnl": -822407.979185
+    },
+    {
+      "address": "0x8ea85cbd59affca28162fc286d5c093dd0f8edbc",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 82915000,
+      "leverage": 3,
+      "entryPx": 72771.2,
+      "liquidationPx": 50033.4437069752,
+      "unrealizedPnl": 10143721.68354
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 65834510,
+      "leverage": 20,
+      "entryPx": 78724.8,
+      "liquidationPx": 121051.3137105526,
+      "unrealizedPnl": -3326960.48471
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 40195552.39875,
+      "leverage": 20,
+      "entryPx": 2527.54,
+      "liquidationPx": 4618.518783383,
+      "unrealizedPnl": -1748588.811835
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "BNB",
+      "isLong": false,
+      "sizeUsd": 1064329,
+      "leverage": 10,
+      "entryPx": 775.875,
+      "liquidationPx": 20731.3515907506,
+      "unrealizedPnl": 21897.12257
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 6333996.61837,
+      "leverage": 10,
+      "entryPx": 4.57323,
+      "liquidationPx": 28.2358603621,
+      "unrealizedPnl": -693259.7037
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 2186120,
+      "leverage": 10,
+      "entryPx": 0.545772,
+      "liquidationPx": 7.5236731818,
+      "unrealizedPnl": -3028.84032
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 889734.645,
+      "leverage": 10,
+      "entryPx": 80.8223,
+      "liquidationPx": 2961.5153674986,
+      "unrealizedPnl": -81107.03176
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 458460,
+      "leverage": 10,
+      "entryPx": 0.111741,
+      "liquidationPx": 6.3212361616,
+      "unrealizedPnl": 44376.54731
+    },
+    {
+      "address": "0xb695651daa495f59dd2725c6fe98322d8b51a92d",
+      "coin": "GRAM",
+      "isLong": false,
+      "sizeUsd": 1285990.6612,
+      "leverage": 5,
+      "entryPx": 1.441022,
+      "liquidationPx": 36.5356513471,
+      "unrealizedPnl": -135971.3127
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 22148982.7937,
+      "leverage": 40,
+      "entryPx": 83207.7,
+      "liquidationPx": 188543.3191479211,
+      "unrealizedPnl": 78203.183147
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "ETH",
+      "isLong": false,
+      "sizeUsd": 41238317.77975,
+      "leverage": 25,
+      "entryPx": 2377.62,
+      "liquidationPx": 4437.2748071412,
+      "unrealizedPnl": -4133529.083856
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "SOL",
+      "isLong": false,
+      "sizeUsd": 726800.112,
+      "leverage": 20,
+      "entryPx": 104.5825,
+      "liquidationPx": 4646.3631494115,
+      "unrealizedPnl": -83079.011189
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "LTC",
+      "isLong": false,
+      "sizeUsd": 770043.72575,
+      "leverage": 10,
+      "entryPx": 53.1214,
+      "liquidationPx": 2515.2455881268,
+      "unrealizedPnl": -186799.179601
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "DOGE",
+      "isLong": false,
+      "sizeUsd": 797904.750709,
+      "leverage": 10,
+      "entryPx": 0.0852,
+      "liquidationPx": 3.2098700215,
+      "unrealizedPnl": -64175.753474
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "SUI",
+      "isLong": false,
+      "sizeUsd": 311093.93094,
+      "leverage": 10,
+      "entryPx": 0.71658,
+      "liquidationPx": 102.9304262624,
+      "unrealizedPnl": -121884.568022
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 551181.8745,
+      "leverage": 10,
+      "entryPx": 10.69397,
+      "liquidationPx": 679.4817340462,
+      "unrealizedPnl": -119837.325318
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 890214.5124,
+      "leverage": 20,
+      "entryPx": 1.346626,
+      "liquidationPx": 47.5726579008,
+      "unrealizedPnl": -76043.007859
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "AAVE",
+      "isLong": false,
+      "sizeUsd": 1410098.84375,
+      "leverage": 10,
+      "entryPx": 116.724,
+      "liquidationPx": 2949.9124625583,
+      "unrealizedPnl": -293195.173692
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "WLD",
+      "isLong": false,
+      "sizeUsd": 867524.596015,
+      "leverage": 10,
+      "entryPx": 0.39656,
+      "liquidationPx": 16.406174907,
+      "unrealizedPnl": -197755.027026
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "UNI",
+      "isLong": false,
+      "sizeUsd": 1656665.93464,
+      "leverage": 10,
+      "entryPx": 5.9351,
+      "liquidationPx": 155.2154289367,
+      "unrealizedPnl": -568327.900052
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "FET",
+      "isLong": false,
+      "sizeUsd": 372278.79642,
+      "leverage": 5,
+      "entryPx": 0.16075,
+      "liquidationPx": 16.3190239132,
+      "unrealizedPnl": -112775.017633
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 2944148.11421,
+      "leverage": 10,
+      "entryPx": 2.38047,
+      "liquidationPx": 51.7887346086,
+      "unrealizedPnl": -1579382.431706
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 1940793.6136,
+      "leverage": 10,
+      "entryPx": 0.386348,
+      "liquidationPx": 7.8738031617,
+      "unrealizedPnl": -568823.193638
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "TAO",
+      "isLong": false,
+      "sizeUsd": 648276.0453,
+      "leverage": 5,
+      "entryPx": 258.594,
+      "liquidationPx": 12395.2759332152,
+      "unrealizedPnl": -92917.706303
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 974537.41434,
+      "leverage": 10,
+      "entryPx": 0.149787,
+      "liquidationPx": 7.5037447461,
+      "unrealizedPnl": -419377.843376
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 1740054.17862,
+      "leverage": 10,
+      "entryPx": 67.952,
+      "liquidationPx": 1458.6933691291,
+      "unrealizedPnl": -410450.728233
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "PAXG",
+      "isLong": false,
+      "sizeUsd": 415108.933248,
+      "leverage": 10,
+      "entryPx": 4343.412,
+      "liquidationPx": 265810.3789612994,
+      "unrealizedPnl": 17981.45146
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 534464.57944,
+      "leverage": 10,
+      "entryPx": 0.003668,
+      "liquidationPx": 0.2480484829,
+      "unrealizedPnl": -129400.96181
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 572331.17412,
+      "leverage": 10,
+      "entryPx": 0.099056,
+      "liquidationPx": 4.7447469653,
+      "unrealizedPnl": -15860.244967
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 1950860.74,
+      "leverage": 10,
+      "entryPx": 1010.8481,
+      "liquidationPx": 22711.8087535651,
+      "unrealizedPnl": -671571.707201
+    },
+    {
+      "address": "0xdf954bbe619273a56e0cfa90dad8382195dc7d72",
+      "coin": "CC",
+      "isLong": false,
+      "sizeUsd": 333693.84076,
+      "leverage": 3,
+      "entryPx": 0.111339,
+      "liquidationPx": 10.3200296143,
+      "unrealizedPnl": -65903.952094
+    },
+    {
+      "address": "0x15a4f009bb324a3fb9e36137136b201e3fe0dfdb",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 82915000,
+      "leverage": 40,
+      "entryPx": 62353.6,
+      "liquidationPx": 53986.4283825023,
+      "unrealizedPnl": 20561345.11882
+    },
+    {
+      "address": "0x15a4f009bb324a3fb9e36137136b201e3fe0dfdb",
+      "coin": "ETH",
+      "isLong": true,
+      "sizeUsd": 26425000,
+      "leverage": 20,
+      "entryPx": 1761.94,
+      "liquidationPx": null,
+      "unrealizedPnl": 8805518.96602
+    },
+    {
+      "address": "0x082e843a431aef031264dc232693dd710aedca88",
+      "coin": "HYPE",
+      "isLong": true,
+      "sizeUsd": 122725813.71114,
+      "leverage": 5,
+      "entryPx": 38.6755,
+      "liquidationPx": 76.1878528813,
+      "unrealizedPnl": 69351883.664392
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "BTC",
+      "isLong": true,
+      "sizeUsd": 14539607.08655,
+      "leverage": 40,
+      "entryPx": 84004.1,
+      "liquidationPx": null,
+      "unrealizedPnl": -190985.806007
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ETH",
+      "isLong": true,
+      "sizeUsd": 3534894.18275,
+      "leverage": 25,
+      "entryPx": 2690.41,
+      "liquidationPx": null,
+      "unrealizedPnl": -64090.131005
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "AVAX",
+      "isLong": false,
+      "sizeUsd": 656654.2141,
+      "leverage": 10,
+      "entryPx": 11.1296,
+      "liquidationPx": 232.8700857307,
+      "unrealizedPnl": 46137.680014
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "BNB",
+      "isLong": true,
+      "sizeUsd": 1102795.37053,
+      "leverage": 10,
+      "entryPx": 774.983,
+      "liquidationPx": null,
+      "unrealizedPnl": -21394.230487
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ARB",
+      "isLong": false,
+      "sizeUsd": 942693.889788,
+      "leverage": 5,
+      "entryPx": 0.20164,
+      "liquidationPx": 3.163322785,
+      "unrealizedPnl": -21863.775976
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "SUI",
+      "isLong": true,
+      "sizeUsd": 451656.84336,
+      "leverage": 10,
+      "entryPx": 1.11602,
+      "liquidationPx": null,
+      "unrealizedPnl": 23834.066809
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "kPEPE",
+      "isLong": true,
+      "sizeUsd": 395967.714058,
+      "leverage": 10,
+      "entryPx": 0.004214,
+      "liquidationPx": null,
+      "unrealizedPnl": -8413.354545
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "LDO",
+      "isLong": false,
+      "sizeUsd": 929038.852404,
+      "leverage": 5,
+      "entryPx": 0.38369,
+      "liquidationPx": 7.1467875228,
+      "unrealizedPnl": -159234.412132
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "LINK",
+      "isLong": false,
+      "sizeUsd": 1166227.1265,
+      "leverage": 10,
+      "entryPx": 13.51003,
+      "liquidationPx": 178.2708360501,
+      "unrealizedPnl": -13225.567447
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "XRP",
+      "isLong": false,
+      "sizeUsd": 4544758.4292,
+      "leverage": 20,
+      "entryPx": 1.521412,
+      "liquidationPx": 6.1346887848,
+      "unrealizedPnl": 151283.398237
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "UNI",
+      "isLong": false,
+      "sizeUsd": 1153346.86248,
+      "leverage": 10,
+      "entryPx": 8.96567,
+      "liquidationPx": 119.0763071064,
+      "unrealizedPnl": -8774.12074
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ZRO",
+      "isLong": true,
+      "sizeUsd": 486784.8678,
+      "leverage": 5,
+      "entryPx": 1.34408,
+      "liquidationPx": null,
+      "unrealizedPnl": 39565.699867
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ADA",
+      "isLong": false,
+      "sizeUsd": 362555.4534,
+      "leverage": 10,
+      "entryPx": 0.255229,
+      "liquidationPx": 9.6467313048,
+      "unrealizedPnl": 18716.487578
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "PENDLE",
+      "isLong": false,
+      "sizeUsd": 629700.938688,
+      "leverage": 5,
+      "entryPx": 2.13011,
+      "liquidationPx": 54.3581088007,
+      "unrealizedPnl": -79548.731469
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "FET",
+      "isLong": false,
+      "sizeUsd": 623373.88272,
+      "leverage": 5,
+      "entryPx": 0.2141,
+      "liquidationPx": 5.1913318735,
+      "unrealizedPnl": -44628.928905
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "NEAR",
+      "isLong": false,
+      "sizeUsd": 705215.3431,
+      "leverage": 10,
+      "entryPx": 5.27105,
+      "liquidationPx": 107.4322767959,
+      "unrealizedPnl": 18642.236803
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "FIL",
+      "isLong": false,
+      "sizeUsd": 553214.50263,
+      "leverage": 5,
+      "entryPx": 1.06349,
+      "liquidationPx": 26.9985816141,
+      "unrealizedPnl": -3210.317003
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "JUP",
+      "isLong": false,
+      "sizeUsd": 1767373.22063,
+      "leverage": 10,
+      "entryPx": 0.295333,
+      "liquidationPx": 2.9129628899,
+      "unrealizedPnl": -222961.452654
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ETC",
+      "isLong": false,
+      "sizeUsd": 519420.044724,
+      "leverage": 5,
+      "entryPx": 9.4057,
+      "liquidationPx": 243.353984056,
+      "unrealizedPnl": 18940.113713
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ONDO",
+      "isLong": false,
+      "sizeUsd": 1346953.79068,
+      "leverage": 5,
+      "entryPx": 0.42539,
+      "liquidationPx": 6.0179916822,
+      "unrealizedPnl": -298554.802231
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "TAO",
+      "isLong": false,
+      "sizeUsd": 631990.39644,
+      "leverage": 5,
+      "entryPx": 311.635,
+      "liquidationPx": 6706.7316997638,
+      "unrealizedPnl": 20465.90348
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ENA",
+      "isLong": false,
+      "sizeUsd": 410967.59474,
+      "leverage": 10,
+      "entryPx": 0.275086,
+      "liquidationPx": 9.2510382644,
+      "unrealizedPnl": 18984.460902
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "HBAR",
+      "isLong": false,
+      "sizeUsd": 668290.772368,
+      "leverage": 5,
+      "entryPx": 0.088216,
+      "liquidationPx": 2.0575090426,
+      "unrealizedPnl": -64697.215922
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "XLM",
+      "isLong": false,
+      "sizeUsd": 759388.53144,
+      "leverage": 5,
+      "entryPx": 0.213542,
+      "liquidationPx": 3.8746030186,
+      "unrealizedPnl": 21510.630292
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "HYPE",
+      "isLong": false,
+      "sizeUsd": 814859.09487,
+      "leverage": 10,
+      "entryPx": 91.9774,
+      "liquidationPx": 1622.0612643759,
+      "unrealizedPnl": 27933.319662
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "VIRTUAL",
+      "isLong": false,
+      "sizeUsd": 708863.378052,
+      "leverage": 5,
+      "entryPx": 0.71489,
+      "liquidationPx": 15.7396270723,
+      "unrealizedPnl": -67599.603694
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "PENGU",
+      "isLong": false,
+      "sizeUsd": 2116776.634026,
+      "leverage": 5,
+      "entryPx": 0.009847,
+      "liquidationPx": 0.0700190319,
+      "unrealizedPnl": 66788.235937
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "SPX",
+      "isLong": false,
+      "sizeUsd": 601326.279708,
+      "leverage": 5,
+      "entryPx": 0.45905,
+      "liquidationPx": 9.8188594587,
+      "unrealizedPnl": 53713.920191
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "VVV",
+      "isLong": false,
+      "sizeUsd": 346237.816275,
+      "leverage": 3,
+      "entryPx": 27.9787,
+      "liquidationPx": 1044.2398903049,
+      "unrealizedPnl": 1796.601478
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "PUMP",
+      "isLong": false,
+      "sizeUsd": 1377636.2556,
+      "leverage": 10,
+      "entryPx": 0.004781,
+      "liquidationPx": 0.0541948152,
+      "unrealizedPnl": -16738.722952
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "XPL",
+      "isLong": false,
+      "sizeUsd": 902062.53396,
+      "leverage": 5,
+      "entryPx": 0.0909,
+      "liquidationPx": 1.6271444374,
+      "unrealizedPnl": -97217.197072
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "WLFI",
+      "isLong": true,
+      "sizeUsd": 420866.609925,
+      "leverage": 5,
+      "entryPx": 0.057405,
+      "liquidationPx": null,
+      "unrealizedPnl": -6482.458881
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ASTER",
+      "isLong": true,
+      "sizeUsd": 599802.8784,
+      "leverage": 5,
+      "entryPx": 0.743552,
+      "liquidationPx": null,
+      "unrealizedPnl": -34419.209019
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "ZEC",
+      "isLong": false,
+      "sizeUsd": 2784503.94,
+      "leverage": 10,
+      "entryPx": 1604.9205,
+      "liquidationPx": 9318.5416375721,
+      "unrealizedPnl": 114560.26636
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "AERO",
+      "isLong": false,
+      "sizeUsd": 631869.55342,
+      "leverage": 3,
+      "entryPx": 0.710217,
+      "liquidationPx": 16.5072864686,
+      "unrealizedPnl": -60710.959384
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "LIT",
+      "isLong": false,
+      "sizeUsd": 383361.888,
+      "leverage": 5,
+      "entryPx": 2.533567,
+      "liquidationPx": 157.1559275995,
+      "unrealizedPnl": -161000.805574
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "XMR",
+      "isLong": true,
+      "sizeUsd": 478275.83118,
+      "leverage": 5,
+      "entryPx": 555.617,
+      "liquidationPx": null,
+      "unrealizedPnl": -22428.067638
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "GRAM",
+      "isLong": false,
+      "sizeUsd": 1034172.349,
+      "leverage": 5,
+      "entryPx": 1.465858,
+      "liquidationPx": 22.5056017244,
+      "unrealizedPnl": -93406.437701
+    },
+    {
+      "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+      "coin": "PONS",
+      "isLong": true,
+      "sizeUsd": 635159.89716,
+      "leverage": 3,
+      "entryPx": 0.548427,
+      "liquidationPx": null,
+      "unrealizedPnl": -41647.127575
+    },
+    {
+      "address": "0xedcdcaa1f18350c50c10bef860e64daa9785d05a",
+      "coin": "BTC",
+      "isLong": false,
+      "sizeUsd": 53894750,
+      "leverage": 4,
+      "entryPx": 84056.8,
+      "liquidationPx": 126827.1888149713,
+      "unrealizedPnl": 742203.86296
+    },
+    {
+      "address": "0xedcdcaa1f18350c50c10bef860e64daa9785d05a",
+      "coin": "ETH",
+      "isLong": true,
+      "sizeUsd": 52850000,
+      "leverage": 4,
+      "entryPx": 1936,
+      "liquidationPx": 1168.0250375585,
+      "unrealizedPnl": 14130000
+    },
+    {
+      "address": "0x47472cd62c99b8b5ce7e84e733515133e9aec0bd",
+      "coin": "ETH",
+      "isLong": true,
+      "sizeUsd": 366548.574,
+      "leverage": 25,
+      "entryPx": 2687.71,
+      "liquidationPx": null,
+      "unrealizedPnl": -6271.909786
+    }
+  ]
+}
