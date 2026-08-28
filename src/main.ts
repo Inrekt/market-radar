@@ -63,8 +63,11 @@ async function main(): Promise<void> {
     // токен может прийти из окружения — это нормально
   }
   const token = process.env.BOT_TOKEN
-  const notifier = token === undefined ? null : await telegramNotifier(token)
-  if (notifier === null) log('сканер: пинги выключены (нет токена или владельца) — считаю и пишу в журнал')
+  // Отправитель создаётся всегда, когда есть токен: владельца он ищет на
+  // каждую отправку сам. Иначе смена, начавшаяся до того как владелец написал
+  // боту, молчала бы все шесть часов.
+  const notifier = token === undefined ? null : telegramNotifier(token)
+  if (notifier === null) log('сканер: токена нет — считаю и пишу в журнал, но не отправляю')
 
   let nextPush = Date.now() + PUSH_INTERVAL_MS
   let nextDigestCheck = 0
@@ -112,7 +115,7 @@ async function main(): Promise<void> {
       if (now >= nextDigestCheck) {
         nextDigestCheck = now + DIGEST_TICK_MS
         const slot = await maybeSendDigest(
-          notifier === null ? null : { send: async (text) => { await sendText(token, text) } },
+          token === undefined ? null : { send: async (text) => { await sendText(token, text) } },
           now,
         )
         if (slot !== null) log(`сводка отправлена: ${slot}`)
@@ -141,12 +144,16 @@ async function main(): Promise<void> {
 /** Текстовое сообщение владельцу. Отдельно от карточек: тут нет картинки. */
 async function sendText(token: string | undefined, text: string): Promise<void> {
   if (token === undefined) return
+  // Тот же порядок, что у карточек: секрет важнее файла, и ищем на каждую
+  // отправку, а не один раз при старте смены.
+  const fromEnv = Number(process.env.RADAR_OWNER_ID)
   const state = await readJson<{ ownerId: number | null }>(join(STATE_DIR, 'bot-state.json'), { ownerId: null })
-  if (state.ownerId === null) return
+  const chatId = Number.isInteger(fromEnv) && fromEnv !== 0 ? fromEnv : state.ownerId
+  if (chatId === null) return
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: state.ownerId, text }),
+    body: JSON.stringify({ chat_id: chatId, text }),
   })
 }
 

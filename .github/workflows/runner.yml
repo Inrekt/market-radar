@@ -54,6 +54,9 @@ jobs:
         id: shift
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          # Владелец из секрета: иначе первая смена не знает, кому слать, и
+          # молчит, пока владелец сам не напишет боту.
+          RADAR_OWNER_ID: ${{ secrets.RADAR_OWNER_ID }}
           STATE_GIT: '1'
         run: |
           if [ -z "$BOT_TOKEN" ]; then
