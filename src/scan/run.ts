@@ -11,7 +11,7 @@ import { chartHtml } from '../render/chart.js'
 import { renderHtml } from '../render/png.js'
 import { loadSeries, valueAt, whaleFlow, type ArchiveView } from './archive.js'
 import { metricsFor } from './metrics.js'
-import { scoreOf, ALERT_THRESHOLD, type Scored } from './score.js'
+import { scoreOf, ALERT_THRESHOLD, medianScore, standsOut, STANDOUT_MARGIN, type Scored } from './score.js'
 import { canAlert, register, EMPTY_ALERT_STATE, type AlertState } from './budget.js'
 import { isMuted, loadTuning } from './tuning.js'
 import { appendLine, dayFile, readJson, writeJson, STATE_DIR } from '../store/ndjson.js'
@@ -142,6 +142,8 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
   let passed = 0
   let sent = 0
 
+  const passedList: { ctx: AssetCtx, scored: Scored, bars: readonly Candle[] }[] = []
+  const allScores: number[] = []
   for (const ctx of picks) {
     const bars = await fetchCandles(ctx.coin, TF, nowSec - TF_SECONDS * BARS, nowMs).catch(() => [])
     if (bars.length < 50) {
@@ -153,6 +155,7 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
       coin: ctx.coin, bars, ctx, archive, btcBars, universeMedian1h: median, whales,
     })
     const scored = scoreOf(metrics)
+    allScores.push(scored.score)
 
     // Журнал пишется ДО решения об отправке: отвергнутый кандидат нужен табелю
     // ровно так же, как отправленный.
@@ -175,7 +178,33 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
       continue
     }
     passed += 1
+    passedList.push({ ctx, scored, bars })
+  }
 
+  // Пинги конкурируют между собой, а не занимают очередь.
+  //
+  // Замер в облаке 28.08.2026: порог прошли 19 кандидатов из 20. При коротком
+  // архиве часть метрик молчит, скор считается по трём лучшим из оставшихся, а
+  // в спокойном рынке «монета сжата» верно почти для всех — признак перестаёт
+  // быть признаком. Если в такой ситуации слать в порядке обхода, отправку
+  // решает алфавит, а не важность события.
+  //
+  // Поэтому: сортируем по скору и отдаём бюджету лучших. Бюджет остаётся
+  // последним словом — он про терпение владельца, а не про качество сигнала.
+  passedList.sort((a, b) => b.scored.score - a.scored.score)
+
+  // Второе условие: событие обязано выделяться на фоне среза, а не только
+  // перебить абсолютную планку. Медиана считается по ВСЕМ рассмотренным
+  // кандидатам, включая не прошедших порог, — иначе фоном становятся сами
+  // отличники и планка уезжает вверх вместе с ними.
+  const fieldMedian = medianScore(allScores)
+  const standout = passedList.filter((item) => {
+    if (standsOut(item.scored.score, fieldMedian)) return true
+    skipped[item.ctx.coin] = `не выделяется: скор ${item.scored.score.toFixed(2)} против медианы среза ${fieldMedian.toFixed(2)}`
+    return false
+  })
+
+  for (const { ctx, scored, bars } of standout) {
     const permission = canAlert(state, ctx.coin, nowMs)
     if (!permission.ok) {
       skipped[ctx.coin] = permission.reason
@@ -202,7 +231,14 @@ export async function scanOnce(notify: Notifier | null, nowMs: number = Date.now
       })
       sent += 1
     } catch (error) {
-      skipped[ctx.coin] = `не отправил: ${redact(error instanceof Error ? error.message : String(error))}`
+      const reason = redact(error instanceof Error ? error.message : String(error))
+      skipped[ctx.coin] = `не отправил: ${reason}`
+      // В журнал: иначе несработавшая отправка неотличима от спокойного рынка,
+      // и разбираться придётся по логам смены, которых через неделю уже нет.
+      await appendLine(dayFile('events', nowMs), {
+        t: nowSec, kind: 'blocked', coin: ctx.coin, px: ctx.markPx,
+        score: Number(scored.score.toFixed(3)), reason,
+      })
     }
   }
 

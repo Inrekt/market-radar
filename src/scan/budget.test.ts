@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ALERT_THRESHOLD, MIN_RELIABLE_METRICS, scoreOf } from './score.js'
+import { ALERT_THRESHOLD, MIN_RELIABLE_METRICS, scoreOf, medianScore, standsOut } from './score.js'
 import { EMPTY_ALERT_STATE, canAlert, register, type AlertState } from './budget.js'
 import type { Metric } from './metrics.js'
 
@@ -211,5 +211,31 @@ describe('скор считается по измеренным метрикам
     // Нулевые метрики в причины пинга не попадают: «пробоя нет» — не повод.
     const withZero = [metric('a', 0.9), metric('quiet', 0)]
     expect(scoreOf(withZero).top.map((m) => m.key)).toEqual(['a'])
+  })
+})
+
+describe('выделение на фоне среза', () => {
+  // Замер в облаке: при коротком архиве порог прошли 19 кандидатов из 20.
+  // Признак, общий для всего рынка, ничего не выделяет — это состояние рынка,
+  // а не событие монеты.
+  it('в поле, где высоки все, не проходит никто', () => {
+    const field = [0.7, 0.72, 0.68, 0.71, 0.69]
+    const median = medianScore(field)
+    for (const score of field) expect(standsOut(score, median)).toBe(false)
+  })
+
+  it('в спокойном поле проходит тот, кто выбивается', () => {
+    const field = [0.05, 0.04, 0.9, 0.06, 0.03]
+    const median = medianScore(field)
+    expect(standsOut(0.9, median)).toBe(true)
+    expect(standsOut(0.06, median)).toBe(false)
+  })
+
+  it('медиана не путается с максимумом при чётном числе', () => {
+    expect(medianScore([0.2, 0.4, 0.6, 0.8])).toBeCloseTo(0.5, 5)
+  })
+
+  it('пустой срез не даёт NaN', () => {
+    expect(medianScore([])).toBe(0)
   })
 })

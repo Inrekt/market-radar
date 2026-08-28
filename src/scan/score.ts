@@ -125,3 +125,32 @@ export function scoreOf(metrics: readonly Metric[]): Scored {
     top,
   }
 }
+
+/**
+ * Насколько скор обязан превышать медиану среза, чтобы считаться событием.
+ *
+ * Абсолютного порога мало. Замер в облаке 28.08.2026: при коротком архиве часть
+ * метрик молчит, а в спокойном рынке «монета сжата» верно почти для всех — и
+ * порог прошли 19 кандидатов из 20. Признак, общий для всего рынка, ничего не
+ * выделяет: это состояние рынка, а не событие монеты.
+ *
+ * Поэтому кандидат должен и перебить абсолютную планку, и оторваться от поля.
+ * Правило самонастраивающееся: в спокойный день не пройдёт никто, в бурный
+ * пройдёт тот, кто действительно выбивается.
+ */
+export const STANDOUT_MARGIN = 0.15
+
+/** Медиана скоров среза: фон, на котором событие обязано выделяться. */
+export function medianScore(scores: readonly number[]): number {
+  const sorted = scores.filter((value) => Number.isFinite(value)).sort((a, b) => a - b)
+  if (sorted.length === 0) return 0
+  const middle = Math.floor(sorted.length / 2)
+  return sorted.length % 2 === 0
+    ? ((sorted[middle - 1] ?? 0) + (sorted[middle] ?? 0)) / 2
+    : sorted[middle] ?? 0
+}
+
+/** Выделяется ли кандидат на фоне среза. */
+export function standsOut(score: number, median: number): boolean {
+  return score >= median + STANDOUT_MARGIN
+}

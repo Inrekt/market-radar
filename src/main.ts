@@ -68,6 +68,7 @@ async function main(): Promise<void> {
   // боту, молчала бы все шесть часов.
   const notifier = token === undefined ? null : telegramNotifier(token)
   if (notifier === null) log('сканер: токена нет — считаю и пишу в журнал, но не отправляю')
+  else log('сканер: отправка включена')
 
   let nextPush = Date.now() + PUSH_INTERVAL_MS
   let nextDigestCheck = 0
