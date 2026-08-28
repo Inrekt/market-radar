@@ -7,6 +7,21 @@ import puppeteer, { TimeoutError, type Browser, type ElementHandle, type Page } 
 import { chartHtml, type ChartInput } from './chart.js'
 
 /**
+ * Флаги запуска браузера. Без них снимки не делаются на сервере, а на машине
+ * владельца всё работает — поэтому дефект и дожил до облака.
+ *
+ * --no-sandbox: в контейнере GitHub Actions ядро запрещает песочницу без
+ *   привилегий (Ubuntu 23.10+ закрывает user namespaces через AppArmor), и
+ *   Chrome падает с «No usable sandbox». Замерено 28.08.2026: одиннадцать
+ *   готовых пингов умерли ровно здесь.
+ * --disable-dev-shm-usage: /dev/shm в контейнере крошечный, а карточки у нас
+ *   2880×3600 — браузер упирается в него на больших снимках.
+ * --disable-gpu: на сервере видеокарты нет, попытка её искать только тормозит
+ *   запуск.
+ */
+const LAUNCH_ARGS = ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+
+/**
  * Съёмка в двойном разрешении. Телеграм ужимает фото под ширину экрана, и кадр
  * «пиксель в пиксель» после этого выглядит мылом: первыми размазываются линии
  * ликвидности в 1px и курсив подписей.
@@ -55,7 +70,10 @@ function forget(stale: Promise<Browser>): void {
 
 async function browser(): Promise<Browser> {
   for (let attempt = 0; attempt < LAUNCH_ATTEMPTS; attempt++) {
-    const pending = (launching ??= puppeteer.launch({ headless: true }))
+    const pending = (launching ??= puppeteer.launch({
+      headless: true,
+      args: LAUNCH_ARGS,
+    }))
     let instance: Browser
     try {
       instance = await pending
