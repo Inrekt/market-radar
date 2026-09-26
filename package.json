@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "bot": "tsx src/run-bot.ts",
-    "render": "tsx scripts/render-demo.ts"
+    "render": "tsx scripts/render-demo.ts",
+    "setup:dry": "tsx scripts/setup-dry.ts"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",

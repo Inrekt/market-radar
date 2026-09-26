@@ -31,6 +31,21 @@ async function ownerId(): Promise<number | null> {
   return state.ownerId
 }
 
+/** Текстовое сообщение владельцу — для алертов сетапа, где картинка не нужна. */
+export function telegramText(token: string): (text: string) => Promise<void> {
+  return async (text: string): Promise<void> => {
+    const chatId = await ownerId()
+    if (chatId === null) throw new Error('владелец неизвестен: никто не писал боту и RADAR_OWNER_ID не задан')
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, link_preview_options: { is_disabled: true } }),
+    })
+    const body = (await res.json()) as { ok: boolean, description?: string }
+    if (!body.ok) throw new Error(redact(body.description ?? 'Telegram отказал без объяснения'))
+  }
+}
+
 export function telegramNotifier(token: string): Notifier {
   return {
     async send(coin: string, photoPath: string, caption: string): Promise<void> {
