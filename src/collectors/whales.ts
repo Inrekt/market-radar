@@ -24,11 +24,6 @@ const MIN_CHANGE_USD = 25_000
 const UNIVERSE_PATH = join(STATE_DIR, 'whale-universe.json')
 const TAGSET_PATH = join(STATE_DIR, 'whale-tagset.json')
 const LAST_PATH = join(STATE_DIR, 'whale-last.json')
-/**
- * Последний снимок позиций с ценами ликвидации — для карты ликвидаций сетапа.
- * Один перезаписываемый файл, не архив: копить полные снимки по-прежнему незачем.
- */
-export const WHALE_POSITIONS_PATH = join(STATE_DIR, 'whale-positions.json')
 
 export interface WhaleUniverse {
   readonly refreshedAt: number
@@ -112,11 +107,9 @@ export async function collectWhales(addresses: readonly string[], nowMs: number 
   const lists = await mapWithConcurrency(addresses, CONCURRENCY, fetchPositions)
   const current: Book = {}
   const entries: Record<string, number> = {}
-  const kept: Position[] = []
   for (const positions of lists) {
     for (const position of positions) {
       if (position.sizeUsd < MIN_POSITION_USD) continue
-      kept.push(position)
       const key = `${position.address}|${position.coin}`
       current[key] = signedUsd(position)
       entries[key] = position.entryPx
@@ -126,6 +119,5 @@ export async function collectWhales(addresses: readonly string[], nowMs: number 
   const diffs = diffBooks(previous, current, Math.floor(nowMs / 1000), entries)
   for (const diff of diffs) await appendLine(dayFile('whales', nowMs), diff)
   await writeJson(LAST_PATH, current)
-  await writeJson(WHALE_POSITIONS_PATH, { t: nowMs, positions: kept })
   return diffs
 }

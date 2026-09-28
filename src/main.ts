@@ -13,8 +13,7 @@ import { FlowRecorder } from './flow/ws.js'
 import { refreshWatchlist, type WatchEntry } from './universe.js'
 import { readJson, writeJson, STATE_DIR } from './store/ndjson.js'
 import { scanOnce } from './scan/run.js'
-import { telegramNotifier, telegramText } from './scan/notify.js'
-import { scanSetups, SETUP_COINS } from './setup/run.js'
+import { telegramNotifier } from './scan/notify.js'
 import { maybeSendDigest, maybeWriteNote } from './report/schedule.js'
 import { beatAndPush, PUSH_INTERVAL_MS } from './statePush.js'
 import { join } from 'node:path'
@@ -23,11 +22,6 @@ const WATCHLIST_PATH = join(STATE_DIR, 'watchlist.json')
 const WATCHLIST_TICK_MS = 24 * 3_600_000
 /** Сканер идёт следом за снимком рынка: свежее данных всё равно не будет. */
 const SCAN_TICK_MS = 5 * 60_000
-/** Сетап владельца смотрим так же часто, как сканер: закрытый 15-минутный бар раньше не появится. */
-const SETUP_TICK_MS = 5 * 60_000
-/** Лента BTC, ETH, SOL пишется всегда: без неё сетап нечем подтвердить. */
-const withSetupCoins = (coins: readonly string[]): string[] => [...new Set([...SETUP_COINS, ...coins])]
-
 /** Расписание сводок проверяем раз в минуту — час наступает ровно один раз. */
 const DIGEST_TICK_MS = 60_000
 
@@ -59,7 +53,7 @@ async function main(): Promise<void> {
   await writeJson(WATCHLIST_PATH, watch.entries)
   log(`список наблюдения: ${watch.coins.join(', ')}`)
 
-  const flow = new FlowRecorder(withSetupCoins(watch.coins), new Set(universe.tagged))
+  const flow = new FlowRecorder(watch.coins, new Set(universe.tagged))
   flow.start()
   log('поток пишется')
 
@@ -73,14 +67,12 @@ async function main(): Promise<void> {
   // каждую отправку сам. Иначе смена, начавшаяся до того как владелец написал
   // боту, молчала бы все шесть часов.
   const notifier = token === undefined ? null : telegramNotifier(token)
-  const setupSender = token === undefined ? null : telegramText(token)
   if (notifier === null) log('сканер: токена нет — считаю и пишу в журнал, но не отправляю')
   else log('сканер: отправка включена')
 
   let nextPush = Date.now() + PUSH_INTERVAL_MS
   let nextDigestCheck = 0
   let nextScan = Date.now() + SCAN_TICK_MS
-  let nextSetup = Date.now() + SETUP_TICK_MS
   let nextMarket = 0
   let nextWhales = 0
   let nextWatchlist = Date.now() + WATCHLIST_TICK_MS
@@ -117,11 +109,6 @@ async function main(): Promise<void> {
         nextScan = now + SCAN_TICK_MS
         log(`сканер: ${outcome.shortlisted} кандидатов, прошли порог ${outcome.passed}, отправлено ${outcome.sent}`)
       }
-      if (now >= nextSetup) {
-        nextSetup = now + SETUP_TICK_MS
-        const setupAlerts = await scanSetups(setupSender, now)
-        log(`сетап BTC/ETH/SOL: алертов ${setupAlerts}`)
-      }
       if (now >= nextPush) {
         nextPush = now + PUSH_INTERVAL_MS
         if (await beatAndPush(now)) log('архив отправлен в ветку state')
@@ -139,7 +126,7 @@ async function main(): Promise<void> {
       if (now >= nextWatchlist) {
         watch = refreshWatchlist(watch.entries, await fetchAssetCtxs(), now)
         await writeJson(WATCHLIST_PATH, watch.entries)
-        flow.setCoins(withSetupCoins(watch.coins))
+        flow.setCoins(watch.coins)
         nextWatchlist = now + WATCHLIST_TICK_MS
         log(`список наблюдения: ${watch.coins.join(', ')}`)
       }

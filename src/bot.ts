@@ -19,7 +19,6 @@ import { activeMutes, DEFAULT_MUTE_HOURS, loadTuning, mute, saveTuning, unmute }
 import { ALERT_THRESHOLD } from './scan/score.js'
 import { loadSeries, valueAt, whaleFlow } from './scan/archive.js'
 import { readEvents } from './report/events.js'
-import { setupReport } from './setup/score.js'
 
 const TIMEFRAMES = ['5m', '15m', '1h', '4h', '1d'] as const
 type Timeframe = (typeof TIMEFRAMES)[number]
@@ -99,7 +98,6 @@ export function createBot(token: string): Bot {
   bot.command('start', async (ctx) => { await ctx.reply(HELLO) })
   bot.command('ta', onTa)
   bot.command('score', onScore)
-  bot.command('setups', onSetups)
   bot.command('digest', onDigest)
   bot.command('help', async (ctx) => { await ctx.reply(HELP) })
   bot.command('status', onStatus)
@@ -174,7 +172,6 @@ const HELP = [
   '/flow SOL — что с потоком прямо сейчас: лента, дельта, ближний стакан.',
   '/digest — сводка за последние часы. Утром и вечером присылаю сам.',
   '/score — чего стоили мои пинги: движение после них против контрольной группы.',
-  '/setups — алерты по ТВОЕЙ стратегии (свип + поток, BTC/ETH/SOL) и чем кончились бы сделки по ним.',
   '/status — живой ли я и что видел за сутки.',
   '',
   'Управление шумом:',
@@ -282,15 +279,6 @@ async function onScore(ctx: CommandContext<Context>): Promise<void> {
 }
 
 /** Сводка за окно по запросу; по расписанию её же шлёт регистратор. */
-async function onSetups(ctx: CommandContext<Context>): Promise<void> {
-  try {
-    await ctx.reply(await setupReport())
-  } catch (error) {
-    console.error('/setups:', safeError(error))
-    await ctx.reply('Не смог посчитать сетапы — попробуй через минуту.')
-  }
-}
-
 async function onDigest(ctx: CommandContext<Context>): Promise<void> {
   const hours = Number(ctx.match.trim()) || DIGEST_HOURS
   await ctx.reply('Собираю сводку…')
